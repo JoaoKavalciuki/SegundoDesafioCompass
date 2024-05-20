@@ -127,4 +127,22 @@ public class CentroDistribuicao implements Serializable {
             return false;
         return true;
     }
+
+    @Override
+    public String toString() {
+        StringBuilder sb = new StringBuilder();
+        sb.append("Centro de Distribuição:\n");
+        sb.append("ID: ").append(id).append("\n");
+        sb.append("Nome: ").append(nome).append("\n");
+        sb.append("Endereço:\n");
+        sb.append("   Logradouro: ").append(logradouro).append("\n");
+        sb.append("   Número: ").append(numero).append("\n");
+        sb.append("   Bairro: ").append(bairro).append("\n");
+        sb.append("   Cidade: ").append(cidade).append("\n");
+        sb.append("   Estado: ").append(estado).append("\n");
+        sb.append("CEP: ").append(cep).append("\n");
+        sb.append("\n");
+        return sb.toString();
+    }
+
 }

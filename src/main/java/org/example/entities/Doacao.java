@@ -3,6 +3,7 @@ package org.example.entities;
 import java.io.Serializable;
 import java.time.LocalDate;
 
+import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
@@ -21,6 +22,7 @@ public class Doacao implements Serializable {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Integer id;
     private Integer quantidade;
+    @Column(name = "data_doacao")
     private LocalDate data;
     @ManyToOne
     @JoinColumn(name = "cd_id")
@@ -32,10 +34,12 @@ public class Doacao implements Serializable {
     public Doacao() {
     }
 
-    public Doacao(Integer id, Integer quantidade, LocalDate data) {
+    public Doacao(Integer id, Integer quantidade, LocalDate data, CentroDistribuicao centroDistribuicao, Item item) {
         this.id = id;
         this.quantidade = quantidade;
         this.data = data;
+        this.centroDistribuicao = centroDistribuicao;
+        this.item = item;
     }
 
     public Integer getId() {
@@ -60,6 +64,26 @@ public class Doacao implements Serializable {
 
     public void setData(LocalDate data) {
         this.data = data;
+    }
+
+    public static long getSerialversionuid() {
+        return serialVersionUID;
+    }
+
+    public CentroDistribuicao getCentroDistribuicao() {
+        return centroDistribuicao;
+    }
+
+    public void setCentroDistribuicao(CentroDistribuicao centroDistribuicao) {
+        this.centroDistribuicao = centroDistribuicao;
+    }
+
+    public Item getItem() {
+        return item;
+    }
+
+    public void setItem(Item item) {
+        this.item = item;
     }
 
     @Override

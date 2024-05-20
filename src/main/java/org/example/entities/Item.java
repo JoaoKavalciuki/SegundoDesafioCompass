@@ -2,12 +2,8 @@ package org.example.entities;
 
 import java.io.Serializable;
 
-import org.example.entities.enums.CategoriaItem;
-
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
-import jakarta.persistence.EnumType;
-import jakarta.persistence.Enumerated;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
@@ -21,8 +17,7 @@ public class Item implements Serializable {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Integer id;
-    @Enumerated(EnumType.STRING)
-    private CategoriaItem categoria;
+    private String categoria;
     @Column(name = "item")
     private String itemNome;
     private String genero;
@@ -104,4 +99,18 @@ public class Item implements Serializable {
         return true;
     }
 
+    @Override
+    public String toString() {
+        StringBuilder sb = new StringBuilder();
+        sb.append("Item:\n");
+        sb.append("ID: ").append(id).append("\n");
+        sb.append("Categoria: ").append(categoria).append("\n");
+        sb.append("Nome do Item: ").append(itemNome).append("\n");
+        if (genero != null)
+            sb.append("Gênero: ").append(genero).append("\n");
+        if (tamanho != null)
+            sb.append("Tamanho: ").append(tamanho).append("\n");
+        sb.append("\n");
+        return sb.toString();
+    }
 }
