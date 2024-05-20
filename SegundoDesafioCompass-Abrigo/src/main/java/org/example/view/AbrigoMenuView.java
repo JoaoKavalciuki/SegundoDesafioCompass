@@ -1,34 +1,34 @@
-package org.example.ui;
+package org.example.view;
 
+import java.util.Scanner;
 import org.example.entity.Abrigo;
 import org.example.service.AbrigoService;
 
-import java.util.Scanner;
 
-public class AbrigoMenuHandler {
+public class AbrigoMenuView implements View {
 
-    private final AbrigoService abrigoService;
     private final Scanner scanner;
+    private final AbrigoService abrigoService;
 
-    public AbrigoMenuHandler(AbrigoService abrigoService) {
-        this.abrigoService = abrigoService;
+    public AbrigoMenuView() {
+        this.abrigoService = new AbrigoService();
         this.scanner = new Scanner(System.in);
 
     }
 
-    public void displayMenu() {
+    @Override
+    public void display() {
         while (true) {
-            System.out.println("Menu:");
-            System.out.println("1. Cadastrar Abrigo");
-            System.out.println("2. Listar Abrigos");
-            System.out.println("3. Atualizar Abrigo");
-            System.out.println("4. Deletar Abrigo");
-            System.out.println("5. Sair");
+            System.out.println("|# # # # # # #Abrigo# # # # # # #|");
+            System.out.println("|1-Cadastrar Abrigo              |");
+            System.out.println("|2-Listar Abrigos                |");
+            System.out.println("|3-Atualizar Abrigo              |");
+            System.out.println("|4-Deletar Abrigo                |");
+            System.out.println("|5-Sair                          |");
             System.out.print("Escolha uma opção: ");
-            int option = scanner.nextInt();
-            scanner.nextLine();  // Consume newline
+            int choice = scanner.nextInt();
 
-            switch (option) {
+            switch (choice) {
                 case 1:
                     abrigoService.createAbrigo(new Abrigo());
                     break;
@@ -54,5 +54,4 @@ public class AbrigoMenuHandler {
             }
         }
     }
-
 }

@@ -1,13 +1,10 @@
 package org.example;
 
-import org.example.service.AbrigoService;
-import org.example.ui.AbrigoMenuHandler;
+import org.example.view.CentrosMenuView;
 
 public class Main {
     public static void main(String[] args) {
-        AbrigoService abrigoService = new AbrigoService();
-        AbrigoMenuHandler abrigoMenuHandler = new AbrigoMenuHandler(abrigoService);
-        abrigoMenuHandler.displayMenu();
-        abrigoService.close();
+        CentrosMenuView centrosMenuView = new CentrosMenuView();
+        centrosMenuView.display();
     }
 }
