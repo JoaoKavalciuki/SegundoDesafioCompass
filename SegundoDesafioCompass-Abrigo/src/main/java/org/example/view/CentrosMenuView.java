@@ -1,7 +1,5 @@
 package org.example.view;
 
-import org.example.service.AbrigoService;
-
 import java.util.Scanner;
 
 public class CentrosMenuView implements View {
