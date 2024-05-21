@@ -1,7 +1,9 @@
 package org.example.view;
 
+import java.util.List;
 import java.util.Scanner;
 import org.example.entity.Abrigo;
+import org.example.entity.Item;
 import org.example.service.AbrigoService;
 
 
@@ -24,7 +26,9 @@ public class AbrigoMenuView implements View {
             System.out.println("|2-Listar Abrigos                |");
             System.out.println("|3-Atualizar Abrigo              |");
             System.out.println("|4-Deletar Abrigo                |");
-            System.out.println("|5-Sair                          |");
+            System.out.println("|5-Listar por ID                 |");
+            System.out.println("|6-Criar pedido para Abrigo      |");
+            System.out.println("|0-Sair                          |");
             System.out.print("Escolha uma opção: ");
             int choice = scanner.nextInt();
 
@@ -48,6 +52,26 @@ public class AbrigoMenuView implements View {
                     abrigoService.deleteAbrigo(id);
                     break;
                 case 5:
+                    System.out.print("Digite o ID do abrigo: ");
+                    Long idAbrigo = scanner.nextLong();
+                    scanner.nextLine(); // Consumir nova linha
+                    try {
+                        abrigoService.listarInformacoesPorAbrigo(idAbrigo);
+                    } catch (Exception e) {
+                        System.out.println("Erro: " + e.getMessage());
+                    }
+                    break;
+                case 6:
+                    System.out.print("Digite o ID do abrigo: ");
+                    Long idPedidoAbrigo = scanner.nextLong();
+                    scanner.nextLine();
+                    try {
+                        abrigoService.criarPedidoParaAbrigo(idPedidoAbrigo);
+                    } catch (Exception e) {
+                        System.out.println("Erro: " + e.getMessage());
+                    }
+                    break;
+                case 0:
                     System.exit(0);
                 default:
                     System.out.println("Opção inválida!");

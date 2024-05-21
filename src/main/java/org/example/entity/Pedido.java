@@ -15,15 +15,18 @@ public class Pedido {
     private Long id;
 
     @ManyToOne
-    @JoinColumn(name = "abrigo_id")
+    @JoinColumn(name = "abrigo_id", nullable = false)
     private Abrigo abrigo;
 
+    @Column(nullable = false, columnDefinition = "TIMESTAMP DEFAULT CURRENT_TIMESTAMP")
     private Instant dataPedido;
 
-    @Enumerated(EnumType.STRING) //ARMAZENA A STRING E NÃO O INDICE DO ENUM
+    @Column(nullable = false)
+    @Enumerated(EnumType.STRING)
     private StatusPedido statusPedido;
 
-    private String motivoRecusa; //PODE SER TEXT NO LUGAR DE STRING
+    @Column(nullable = false, columnDefinition = "VARCHAR(255) DEFAULT ''")
+    private String motivoRecusa;
 
     @OneToMany(mappedBy = "pedido", cascade = CascadeType.ALL)
     private List<PedidoItem> itens;
@@ -31,6 +34,51 @@ public class Pedido {
     public Pedido() {
     }
 
-    //TODO get e set
+    public Abrigo getAbrigo() {
+        return abrigo;
+    }
 
+    public void setAbrigo(Abrigo abrigo) {
+        this.abrigo = abrigo;
+    }
+
+    public Instant getDataPedido() {
+        return dataPedido;
+    }
+
+    public void setDataPedido(Instant dataPedido) {
+        this.dataPedido = dataPedido;
+    }
+
+    public Long getId() {
+        return id;
+    }
+
+    public void setId(Long id) {
+        this.id = id;
+    }
+
+    public List<PedidoItem> getItens() {
+        return itens;
+    }
+
+    public void setItens(List<PedidoItem> itens) {
+        this.itens = itens;
+    }
+
+    public String getMotivoRecusa() {
+        return motivoRecusa;
+    }
+
+    public void setMotivoRecusa(String motivoRecusa) {
+        this.motivoRecusa = motivoRecusa;
+    }
+
+    public StatusPedido getStatusPedido() {
+        return statusPedido;
+    }
+
+    public void setStatusPedido(StatusPedido statusPedido) {
+        this.statusPedido = statusPedido;
+    }
 }

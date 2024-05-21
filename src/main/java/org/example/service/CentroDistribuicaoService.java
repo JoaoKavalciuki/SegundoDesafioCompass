@@ -2,7 +2,7 @@ package org.example.service;
 
 
 import org.example.entity.CentroDistribuicao;
-import org.example.repository.CentroDistribuicaoRepository;
+import org.example.repositorys.CentroDistribuicaoRepository;
 
 import java.util.List;
 

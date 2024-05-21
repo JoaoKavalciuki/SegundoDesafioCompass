@@ -44,5 +44,3 @@ public class CentrosMenuView implements View {
         }
     }
 }
-
-

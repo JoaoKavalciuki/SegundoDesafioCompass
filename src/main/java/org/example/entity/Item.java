@@ -1,7 +1,6 @@
 package org.example.entity;
 
 import jakarta.persistence.*;
-
 import java.util.List;
 
 @Entity
@@ -18,11 +17,64 @@ public class Item {
     private String tamanho;
 
     @OneToMany(mappedBy = "item", cascade = CascadeType.ALL)
-    private List<Doacao> doacoes;
+    private List<PedidoItem> pedidoItens;
 
-    public Item() {
+    @Transient
+    private int quantidade;
+
+    public String getCategoria() {
+        return categoria;
     }
 
-    //TODO get e set
+    public void setCategoria(String categoria) {
+        this.categoria = categoria;
+    }
 
+    public String getGenero() {
+        return genero;
+    }
+
+    public void setGenero(String genero) {
+        this.genero = genero;
+    }
+
+    public Long getId() {
+        return id;
+    }
+
+    public void setId(Long id) {
+        this.id = id;
+    }
+
+    public String getItem() {
+        return item;
+    }
+
+    public void setItem(String item) {
+        this.item = item;
+    }
+
+    public List<PedidoItem> getPedidoItens() {
+        return pedidoItens;
+    }
+
+    public void setPedidoItens(List<PedidoItem> pedidoItens) {
+        this.pedidoItens = pedidoItens;
+    }
+
+    public int getQuantidade() {
+        return quantidade;
+    }
+
+    public void setQuantidade(int quantidade) {
+        this.quantidade = quantidade;
+    }
+
+    public String getTamanho() {
+        return tamanho;
+    }
+
+    public void setTamanho(String tamanho) {
+        this.tamanho = tamanho;
+    }
 }
