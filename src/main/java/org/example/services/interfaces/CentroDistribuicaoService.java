@@ -10,5 +10,5 @@ public interface CentroDistribuicaoService {
 
     List<CentroDistribuicao> findAll();
 
-    CentroDistribuicao findById(int id);
+    CentroDistribuicao findById(Long id);
 }

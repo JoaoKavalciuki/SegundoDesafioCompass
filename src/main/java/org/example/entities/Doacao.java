@@ -20,7 +20,8 @@ public class Doacao implements Serializable {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Integer id;
+    private Long id;
+    @Column(name = "quantidade")
     private Integer quantidade;
     @Column(name = "data_doacao")
     private LocalDate data;
@@ -34,7 +35,7 @@ public class Doacao implements Serializable {
     public Doacao() {
     }
 
-    public Doacao(Integer id, Integer quantidade, LocalDate data, CentroDistribuicao centroDistribuicao, Item item) {
+    public Doacao(Long id, Integer quantidade, LocalDate data, CentroDistribuicao centroDistribuicao, Item item) {
         this.id = id;
         this.quantidade = quantidade;
         this.data = data;
@@ -42,11 +43,11 @@ public class Doacao implements Serializable {
         this.item = item;
     }
 
-    public Integer getId() {
+    public Long getId() {
         return id;
     }
 
-    public void setId(Integer id) {
+    public void setId(Long id) {
         this.id = id;
     }
 
@@ -64,10 +65,6 @@ public class Doacao implements Serializable {
 
     public void setData(LocalDate data) {
         this.data = data;
-    }
-
-    public static long getSerialversionuid() {
-        return serialVersionUID;
     }
 
     public CentroDistribuicao getCentroDistribuicao() {

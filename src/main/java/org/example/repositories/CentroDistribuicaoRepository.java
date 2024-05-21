@@ -24,7 +24,7 @@ public class CentroDistribuicaoRepository {
         return em.createQuery("FROM " + CentroDistribuicao.class.getName(), CentroDistribuicao.class).getResultList();
     }
 
-    public CentroDistribuicao findById(int id) {
+    public CentroDistribuicao findById(Long id) {
         return em.find(CentroDistribuicao.class, id);
     }
 }

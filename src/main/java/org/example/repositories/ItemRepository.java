@@ -18,7 +18,19 @@ public class ItemRepository {
         return em.createQuery("FROM " + Item.class.getName(), Item.class).getResultList();
     }
 
-    public Item findById(int id) {
+    public Item findById(Long id) {
         return em.find(Item.class, id);
+    }
+
+    public void saveItem(Item item) {
+        em.getTransaction().begin();
+        em.persist(item);
+        em.getTransaction().commit();
+    }
+
+    public void updateItem(Item updated) {
+        em.getTransaction().begin();
+        em.merge(updated);
+        em.getTransaction().commit();
     }
 }

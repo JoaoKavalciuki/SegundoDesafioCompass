@@ -7,5 +7,5 @@ import org.example.entities.Item;
 public interface ItemService {
     List<Item> findAll();
 
-    Item findById(int id);
+    Item findById(Long id);
 }

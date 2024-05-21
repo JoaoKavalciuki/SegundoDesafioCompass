@@ -15,7 +15,7 @@ public class CentroDistribuicao implements Serializable {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Integer id;
+    private Long id;
     private String nome;
     private String logradouro;
     private String numero;
@@ -27,7 +27,7 @@ public class CentroDistribuicao implements Serializable {
     public CentroDistribuicao() {
     }
 
-    public CentroDistribuicao(Integer id, String nome, String logradouro, String numero, String bairro, String cidade,
+    public CentroDistribuicao(Long id, String nome, String logradouro, String numero, String bairro, String cidade,
             String estado, String cep) {
         this.id = id;
         this.nome = nome;
@@ -39,11 +39,11 @@ public class CentroDistribuicao implements Serializable {
         this.cep = cep;
     }
 
-    public Integer getId() {
+    public Long getId() {
         return id;
     }
 
-    public void setId(Integer id) {
+    public void setId(Long id) {
         this.id = id;
     }
 

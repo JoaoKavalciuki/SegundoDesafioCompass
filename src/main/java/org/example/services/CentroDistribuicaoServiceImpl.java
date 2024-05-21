@@ -6,6 +6,8 @@ import org.example.entities.CentroDistribuicao;
 import org.example.repositories.CentroDistribuicaoRepository;
 import org.example.services.interfaces.CentroDistribuicaoService;
 
+import jakarta.persistence.EntityNotFoundException;
+
 public class CentroDistribuicaoServiceImpl implements CentroDistribuicaoService {
 
     private CentroDistribuicaoRepository centroDistribuicaoRepository;
@@ -22,7 +24,11 @@ public class CentroDistribuicaoServiceImpl implements CentroDistribuicaoService 
         return centroDistribuicaoRepository.findAll();
     }
 
-    public CentroDistribuicao findById(int id) {
-        return centroDistribuicaoRepository.findById(id);
+    public CentroDistribuicao findById(Long id) {
+        CentroDistribuicao centro = centroDistribuicaoRepository.findById(id);
+        if (centro == null) {
+            throw new EntityNotFoundException("Centro de distribuição não encontrado com ID: " + id);
+        }
+        return centro;
     }
 }

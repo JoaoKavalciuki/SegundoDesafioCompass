@@ -16,17 +16,20 @@ public class Item implements Serializable {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Integer id;
+    private Long id;
+    @Column(name = "categoria")
     private String categoria;
     @Column(name = "item")
     private String itemNome;
+    @Column(name = "genero")
     private String genero;
+    @Column(name = "tamanho")
     private String tamanho;
 
     public Item() {
     }
 
-    public Item(Integer id, String categoria, String itemNome, String genero, String tamanho) {
+    public Item(Long id, String categoria, String itemNome, String genero, String tamanho) {
         this.id = id;
         this.categoria = categoria;
         this.itemNome = itemNome;
@@ -34,11 +37,11 @@ public class Item implements Serializable {
         this.tamanho = tamanho;
     }
 
-    public Integer getId() {
+    public Long getId() {
         return id;
     }
 
-    public void setId(Integer id) {
+    public void setId(Long id) {
         this.id = id;
     }
 
