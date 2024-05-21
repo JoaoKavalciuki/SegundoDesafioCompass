@@ -1,10 +1,8 @@
-package org.example.view;
+package org.example.views;
 
-import java.util.List;
 import java.util.Scanner;
-import org.example.entity.Abrigo;
-import org.example.entity.Item;
-import org.example.service.AbrigoService;
+import org.example.entitys.Abrigo;
+import org.example.services.AbrigoService;
 
 
 public class AbrigoMenuView implements View {

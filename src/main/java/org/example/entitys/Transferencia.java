@@ -1,7 +1,7 @@
-package org.example.entity;
+package org.example.entitys;
 
 import jakarta.persistence.*;
-import org.example.entity.enums.TipoTransferencia;
+import org.example.entitys.enums.TipoTransferencia;
 
 import java.time.Instant;
 

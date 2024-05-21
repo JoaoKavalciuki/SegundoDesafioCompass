@@ -3,7 +3,7 @@ package org.example.repositorys;
 import jakarta.persistence.EntityManager;
 import jakarta.persistence.EntityManagerFactory;
 import jakarta.persistence.Persistence;
-import org.example.entity.CentroDistribuicao;
+import org.example.entitys.CentroDistribuicao;
 
 import java.util.List;
 

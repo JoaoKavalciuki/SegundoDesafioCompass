@@ -1,6 +1,6 @@
 package org.example.repositorys;
 
-import org.example.entity.Abrigo;
+import org.example.entitys.Abrigo;
 import jakarta.persistence.EntityManager;
 import jakarta.persistence.Persistence;
 

@@ -1,7 +1,7 @@
-package org.example.entity;
+package org.example.entitys;
 
 import jakarta.persistence.*;
-import org.example.entity.enums.StatusPedido;
+import org.example.entitys.enums.StatusPedido;
 
 import java.time.Instant;
 import java.util.List;

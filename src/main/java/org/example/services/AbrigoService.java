@@ -1,12 +1,12 @@
-package org.example.service;
+package org.example.services;
 
-import org.example.entity.Abrigo;
+import org.example.entitys.Abrigo;
 
 import java.time.Instant;
-import org.example.entity.Item;
-import org.example.entity.Pedido;
-import org.example.entity.PedidoItem;
-import org.example.entity.enums.StatusPedido;
+import org.example.entitys.Item;
+import org.example.entitys.Pedido;
+import org.example.entitys.PedidoItem;
+import org.example.entitys.enums.StatusPedido;
 import org.example.exceptions.*;
 import org.example.repositorys.AbrigoRepository;
 import org.example.repositorys.ItemRepository;
