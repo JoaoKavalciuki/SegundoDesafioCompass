@@ -11,8 +11,8 @@ public class PedidoService {
         this.pedidoRepository = pedidoRepository;
     }
 
-    public void savePedidoItem(Pedido pedidoItem){
-        pedidoRepository.save(pedidoItem);
+    public void savePedido(Pedido pedido){
+        pedidoRepository.save(pedido);
     }
 
     public Pedido findById(Long id){
