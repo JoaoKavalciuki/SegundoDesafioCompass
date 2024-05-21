@@ -1,4 +1,6 @@
-package org.example.entity;
+package org.example.entities;
+
+import org.example.entities.Item;
 
 import jakarta.persistence.*;
 
@@ -23,6 +25,6 @@ public class PedidoItem {
     public PedidoItem() {
     }
 
-    //TODO get e set
+    // TODO get e set
 
 }

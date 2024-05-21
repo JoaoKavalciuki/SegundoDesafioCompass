@@ -1,10 +1,11 @@
-package org.example.entity;
+package org.example.entities;
 
 import jakarta.persistence.*;
-import org.example.entity.enums.StatusPedido;
 
 import java.time.Instant;
 import java.util.List;
+
+import org.example.entities.enums.StatusPedido;
 
 @Entity
 @Table(name = "pedidos")
@@ -20,10 +21,10 @@ public class Pedido {
 
     private Instant dataPedido;
 
-    @Enumerated(EnumType.STRING) //ARMAZENA A STRING E NÃO O INDICE DO ENUM
+    @Enumerated(EnumType.STRING) // ARMAZENA A STRING E NÃO O INDICE DO ENUM
     private StatusPedido statusPedido;
 
-    private String motivoRecusa; //PODE SER TEXT NO LUGAR DE STRING
+    private String motivoRecusa; // PODE SER TEXT NO LUGAR DE STRING
 
     @OneToMany(mappedBy = "pedido", cascade = CascadeType.ALL)
     private List<PedidoItem> itens;
@@ -31,6 +32,6 @@ public class Pedido {
     public Pedido() {
     }
 
-    //TODO get e set
+    // TODO get e set
 
 }

@@ -1,9 +1,14 @@
-package org.example.entity;
-
-import jakarta.persistence.*;
-import org.example.entity.enums.TipoTransferencia;
+package org.example.entities;
 
 import java.time.Instant;
+
+import jakarta.persistence.Entity;
+import jakarta.persistence.GeneratedValue;
+import jakarta.persistence.GenerationType;
+import jakarta.persistence.Id;
+import jakarta.persistence.JoinColumn;
+import jakarta.persistence.ManyToOne;
+import jakarta.persistence.Table;
 
 @Entity
 @Table(name = "transferencias")
@@ -33,12 +38,11 @@ public class Transferencia {
 
     private Instant dataTransferencia;
 
-    @Enumerated(EnumType.STRING)
-    private TipoTransferencia tipo;
+    private String tipo;
 
     public Transferencia() {
     }
 
-    //TODO get e set
+    // TODO get e set
 
 }

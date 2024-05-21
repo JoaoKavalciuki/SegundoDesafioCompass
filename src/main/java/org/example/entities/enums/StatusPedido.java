@@ -1,4 +1,4 @@
-package org.example.entity.enums;
+package org.example.entities.enums;
 
 public enum StatusPedido {
 

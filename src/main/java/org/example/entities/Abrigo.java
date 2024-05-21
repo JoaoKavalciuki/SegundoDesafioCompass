@@ -1,4 +1,4 @@
-package org.example.entity;
+package org.example.entities;
 
 import jakarta.persistence.*;
 
@@ -26,7 +26,6 @@ public class Abrigo {
     public Abrigo() {
     }
 
-    //TODO get e set
+    // TODO get e set
 
 }
-
