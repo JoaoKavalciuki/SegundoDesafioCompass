@@ -1,9 +1,9 @@
-package org.example.repositorys;
+package org.example.repositories;
 
 import jakarta.persistence.EntityManager;
 import jakarta.persistence.Persistence;
-import org.example.entitys.Abrigo;
-import org.example.entitys.Item;
+import org.example.entities.Abrigo;
+import org.example.entities.Item;
 
 import java.util.List;
 

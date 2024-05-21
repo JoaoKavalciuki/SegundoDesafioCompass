@@ -1,8 +1,8 @@
 package org.example.services;
 
 
-import org.example.entitys.CentroDistribuicao;
-import org.example.repositorys.CentroDistribuicaoRepository;
+import org.example.entities.CentroDistribuicao;
+import org.example.repositories.CentroDistribuicaoRepository;
 
 import java.util.List;
 

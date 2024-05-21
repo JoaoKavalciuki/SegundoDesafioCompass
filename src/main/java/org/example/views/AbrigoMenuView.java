@@ -1,7 +1,7 @@
 package org.example.views;
 
 import java.util.Scanner;
-import org.example.entitys.Abrigo;
+import org.example.entities.Abrigo;
 import org.example.services.AbrigoService;
 
 

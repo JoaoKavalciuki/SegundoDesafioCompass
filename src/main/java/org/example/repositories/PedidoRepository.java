@@ -1,11 +1,11 @@
-package org.example.repositorys;
+package org.example.repositories;
 
-import org.example.entitys.Abrigo;
-import org.example.entitys.Item;
-import org.example.entitys.Pedido;
+import org.example.entities.Abrigo;
+import org.example.entities.Item;
+import org.example.entities.Pedido;
 import jakarta.persistence.EntityManager;
 import jakarta.persistence.Persistence;
-import org.example.entitys.PedidoItem;
+import org.example.entities.PedidoItem;
 
 import java.util.List;
 
