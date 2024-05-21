@@ -4,7 +4,10 @@ import jakarta.persistence.*;
 import org.example.entity.enums.StatusPedido;
 
 import java.time.Instant;
+
 import java.util.*;
+import java.util.List;
+
 
 @Entity
 @Table(name = "pedidos")
@@ -17,19 +20,18 @@ public class Pedido {
     @ManyToOne
     @JoinColumn(name = "abrigo_id")
     private Abrigo abrigo;
-
     @ManyToMany
     @JoinTable(name = "tb_pedidos_centro",
             joinColumns = @JoinColumn(name = "id_produto"),
             inverseJoinColumns = @JoinColumn(name = "id_centro"))
     private Set<CentroDistribuicao> centrosDeDistribuicao = new HashSet<>();
-
     private Instant dataPedido;
 
     @Enumerated(EnumType.STRING) //ARMAZENA A STRING E NÃO O INDICE DO ENUM
     private StatusPedido statusPedido;
 
     private String motivoRecusa; //PODE SER TEXT NO LUGAR DE STRING
+
 
     @OneToMany(mappedBy = "id.pedido", cascade = CascadeType.ALL)
     private List<PedidoItem> itens;

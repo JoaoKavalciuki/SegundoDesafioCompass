@@ -77,4 +77,5 @@ public class Item {
     public void setDoacoes(List<Doacao> doacoes) {
         this.doacoes = doacoes;
     }
+
 }

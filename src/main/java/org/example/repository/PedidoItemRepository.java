@@ -7,7 +7,7 @@ import org.example.entity.PedidoItem;
 
 import java.util.List;
 
-public class PedidoRepository {
+public class PedidoItemRepository {
 
     private EntityManagerFactory emf;
     private EntityManager em;

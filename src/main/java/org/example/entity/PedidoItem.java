@@ -4,11 +4,9 @@ import jakarta.persistence.*;
 import org.example.entity.pk.PedidoItemPk;
 
 import java.util.Objects;
-
 @Entity
 @Table(name = "pedido_itens")
 public class PedidoItem {
-
    @EmbeddedId
    private PedidoItemPk id = new PedidoItemPk();
 
@@ -16,7 +14,6 @@ public class PedidoItem {
 
     public PedidoItem() {
     }
-
 
     public PedidoItem(Pedido pedido, Item item, Integer quantidade){
         this.quantidade = quantidade;
@@ -47,5 +44,4 @@ public class PedidoItem {
         PedidoItem that = (PedidoItem) o;
         return Objects.equals(id, that.id);
     }
-
 }
