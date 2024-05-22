@@ -16,10 +16,17 @@ public class ItemServiceImpl implements ItemService {
         this.itemRepository = new ItemRepository();
     }
 
+    @Override
     public List<Item> findAll() {
         return itemRepository.findAll();
     }
 
+    @Override
+    public List<Item> findByCategoria(String categoria) {
+        return itemRepository.findByCategoria(categoria);
+    }
+
+    @Override
     public Item findById(Long id) {
         Item item = itemRepository.findById(id);
         if (item == null) {
@@ -28,15 +35,31 @@ public class ItemServiceImpl implements ItemService {
         return item;
     }
 
-    public void saveItem(Item item) {
-        itemRepository.saveItem(item);
+    @Override
+    public void save(Item item) {
+        if (findByName(item.getItemNome()) != null) {
+            throw new IllegalArgumentException("Já existe um item com este nome no banco de dados");
+        }
+        itemRepository.save(item);
     }
 
-    public void updateItem(Item updated, Long id) {
+    @Override
+    public void update(String novoNome, Long id) {
         if (id <= 31) {
             throw new IllegalArgumentException("O item deste id não pode ser alterado");
         }
-        updated.setId(this.findById(id).getId());
-        itemRepository.updateItem(updated);
+        Item old = this.findById(id);
+        Item updated = new Item(old.getId(), old.getCategoria(), novoNome, old.getGenero(), old.getTamanho());
+        itemRepository.update(updated);
+    }
+
+    @Override
+    public Item findByName(String name) {
+        return itemRepository.findByName(name);
+    }
+
+    @Override
+    public void deleteById(Long id) {
+        itemRepository.deleteById(id);
     }
 }
