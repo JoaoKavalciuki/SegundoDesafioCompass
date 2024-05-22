@@ -34,11 +34,10 @@ public class Abrigo {
     public Abrigo() {
     }
 
-    public Abrigo(int capacidade, String email, String endereco, Long id, String nome, double ocupacao, String responsavel, String telefone) {
+    public Abrigo(int capacidade, String email, String endereco, String nome, double ocupacao, String responsavel, String telefone) {
         this.capacidade = capacidade;
         this.email = email;
         this.endereco = endereco;
-        this.id = id;
         this.nome = nome;
         this.ocupacao = ocupacao;
         this.responsavel = responsavel;

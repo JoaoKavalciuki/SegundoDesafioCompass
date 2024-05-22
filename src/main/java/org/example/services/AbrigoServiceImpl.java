@@ -1,40 +1,58 @@
 package org.example.services;
 
 import org.example.entities.Abrigo;
+import org.example.exceptions.ResourceNotFoundException;
 import org.example.exceptions.ValidationException;
 import org.example.repositories.AbrigoRepository;
 import org.example.services.interfaces.AbrigoService;
 
+import jakarta.persistence.EntityManager;
+
 import java.util.List;
+import java.util.Scanner;
 
 public class AbrigoServiceImpl implements AbrigoService {
 
+    private EntityManager em;
     private AbrigoRepository abrigoRepository;
+    private Scanner scanner;
 
-    public AbrigoServiceImpl(AbrigoRepository abrigoRepository) {
-        this.abrigoRepository = abrigoRepository;
+    public AbrigoServiceImpl(EntityManager em, Scanner scanner) {
+        this.em = em;
+        this.abrigoRepository = new AbrigoRepository(em);
+        this.scanner = scanner;
     }
 
-    public AbrigoServiceImpl() {
-
-    }
-
-    @Override
     public void createAbrigo(Abrigo abrigo) {
         try {
+            System.out.print("Nome: ");
+            abrigo.setNome(scanner.nextLine());
+            System.out.print("Endereço: ");
+            abrigo.setEndereco(scanner.nextLine());
+            System.out.print("Responsável: ");
+            abrigo.setResponsavel(scanner.nextLine());
+            System.out.print("Telefone: ");
+            abrigo.setTelefone(scanner.nextLine());
+            System.out.print("Email: ");
+            abrigo.setEmail(scanner.nextLine());
+            System.out.print("Capacidade: ");
+            abrigo.setCapacidade(scanner.nextInt());
+            System.out.print("Ocupação: ");
+            abrigo.setOcupacao(scanner.nextDouble());
+            scanner.nextLine();
+
             validateAbrigo(abrigo);
             abrigoRepository.save(abrigo);
+            System.out.println("Abrigo cadastrado com sucesso!");
         } catch (ValidationException e) {
-            throw new RuntimeException("Erro ao validar o abrigo: " + e.getMessage(), e);
+            System.out.println(e.getMessage());
         }
     }
 
-    @Override
     public List<Abrigo> getAllAbrigos() {
         return abrigoRepository.findAll();
     }
 
-    @Override
     public void listarAbrigos() {
         List<Abrigo> abrigos = getAllAbrigos();
         for (Abrigo a : abrigos) {
@@ -42,28 +60,70 @@ public class AbrigoServiceImpl implements AbrigoService {
         }
     }
 
-    @Override
     public Abrigo getAbrigo(Long id) {
         Abrigo abrigo = abrigoRepository.findById(id);
         if (abrigo == null) {
-            throw new RuntimeException("Abrigo não encontrado com ID: " + id);
+            throw new ResourceNotFoundException("Abrigo não encontrado com ID: " + id);
         }
         return abrigo;
     }
 
-    @Override
     public void updateAbrigo(Long id) {
         Abrigo existingAbrigo = getAbrigo(id);
         if (existingAbrigo != null) {
-            abrigoRepository.update(existingAbrigo);
+            try {
+                System.out.print("Nome (" + existingAbrigo.getNome() + "): ");
+                String nome = scanner.nextLine();
+                if (!nome.isEmpty()) {
+                    existingAbrigo.setNome(nome);
+                }
+                System.out.print("Endereço (" + existingAbrigo.getEndereco() + "): ");
+                String endereco = scanner.nextLine();
+                if (!endereco.isEmpty()) {
+                    existingAbrigo.setEndereco(endereco);
+                }
+                System.out.print("Responsável (" + existingAbrigo.getResponsavel() + "): ");
+                String responsavel = scanner.nextLine();
+                if (!responsavel.isEmpty()) {
+                    existingAbrigo.setResponsavel(responsavel);
+                }
+                System.out.print("Telefone (" + existingAbrigo.getTelefone() + "): ");
+                String telefone = scanner.nextLine();
+                if (!telefone.isEmpty()) {
+                    existingAbrigo.setTelefone(telefone);
+                }
+                System.out.print("Email (" + existingAbrigo.getEmail() + "): ");
+                String email = scanner.nextLine();
+                if (!email.isEmpty()) {
+                    existingAbrigo.setEmail(email);
+                }
+                System.out.print("Capacidade (" + existingAbrigo.getCapacidade() + "): ");
+                String capacidadeStr = scanner.nextLine();
+                if (!capacidadeStr.isEmpty()) {
+                    int capacidade = Integer.parseInt(capacidadeStr);
+                    existingAbrigo.setCapacidade(capacidade);
+                }
+                System.out.print("Ocupação (" + existingAbrigo.getOcupacao() + "): ");
+                String ocupacaoStr = scanner.nextLine();
+                if (!ocupacaoStr.isEmpty()) {
+                    double ocupacao = Double.parseDouble(ocupacaoStr);
+                    existingAbrigo.setOcupacao(ocupacao);
+                }
+
+                validateAbrigo(existingAbrigo);
+                abrigoRepository.update(existingAbrigo);
+                System.out.println("Abrigo atualizado com sucesso!");
+            } catch (ValidationException e) {
+                System.out.println(e.getMessage());
+            }
         } else {
-            throw new RuntimeException("Abrigo não encontrado!");
+            System.out.println("Abrigo não encontrado!");
         }
     }
 
-    @Override
     public void deleteAbrigo(Long id) {
         abrigoRepository.delete(id);
+        System.out.println("Abrigo deletado com sucesso!");
     }
 
     private void validateAbrigo(Abrigo abrigo) {
