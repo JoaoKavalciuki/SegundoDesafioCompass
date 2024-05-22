@@ -37,7 +37,7 @@ public class ItemServiceImpl implements ItemService {
 
     @Override
     public void save(Item item) {
-        if (findByName(item.getItemNome()) != null) {
+        if (findByName(item.getItemTipo()) != null) {
             throw new IllegalArgumentException("Já existe um item com este nome no banco de dados");
         }
         itemRepository.save(item);

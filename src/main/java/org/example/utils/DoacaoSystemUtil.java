@@ -34,7 +34,7 @@ public class DoacaoSystemUtil {
         List<Doacao> doacoes = doacaoService.listByCategoria(categoria);
         for (Doacao d : doacoes) {
             System.out.println("Id Doacao: " + d.getId());
-            System.out.println("Nome do item: " + d.getItem().getItemNome());
+            System.out.println("Nome do item: " + d.getItem().getItemTipo());
             System.out.println("Id centro: " + d.getCentroDistribuicao().getId());
             System.out.println("Quantidade doada: " + d.getQuantidade());
             System.out.println();
@@ -45,7 +45,7 @@ public class DoacaoSystemUtil {
         List<Doacao> doacoes = doacaoService.listAll();
         for (Doacao d : doacoes) {
             System.out.println("Id Doacao: " + d.getId());
-            System.out.println("Nome do item: " + d.getItem().getItemNome());
+            System.out.println("Nome do item: " + d.getItem().getItemTipo());
             System.out.println("Id centro: " + d.getCentroDistribuicao().getId());
             System.out.println("Quantidade doada: " + d.getQuantidade());
             System.out.println();
