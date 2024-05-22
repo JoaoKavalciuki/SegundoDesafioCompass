@@ -19,8 +19,8 @@ public class Item implements Serializable {
     private Long id;
     @Column(name = "categoria")
     private String categoria;
-    @Column(name = "item")
-    private String itemNome;
+    @Column(name = "tipo")
+    private String itemTipo;
     @Column(name = "genero")
     private String genero;
     @Column(name = "tamanho")
@@ -29,10 +29,10 @@ public class Item implements Serializable {
     public Item() {
     }
 
-    public Item(Long id, String categoria, String itemNome, String genero, String tamanho) {
+    public Item(Long id, String categoria, String itemTipo, String genero, String tamanho) {
         this.id = id;
         this.categoria = categoria;
-        this.itemNome = itemNome;
+        this.itemTipo = itemTipo;
         this.genero = genero;
         this.tamanho = tamanho;
     }
@@ -53,12 +53,12 @@ public class Item implements Serializable {
         this.categoria = categoria;
     }
 
-    public String getItemNome() {
-        return itemNome;
+    public String getItemTipo() {
+        return itemTipo;
     }
 
-    public void setItemNome(String itemNome) {
-        this.itemNome = itemNome;
+    public void setItemTipo(String itemTipo) {
+        this.itemTipo = itemTipo;
     }
 
     public String getGenero() {
@@ -108,7 +108,7 @@ public class Item implements Serializable {
         sb.append("Item:\n");
         sb.append("ID: ").append(id).append("\n");
         sb.append("Categoria: ").append(categoria).append("\n");
-        sb.append("Nome do Item: ").append(itemNome).append("\n");
+        sb.append("Nome do Item: ").append(itemTipo).append("\n");
         if (genero != null)
             sb.append("Gênero: ").append(genero).append("\n");
         if (tamanho != null)
