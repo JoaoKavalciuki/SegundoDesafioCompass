@@ -28,7 +28,7 @@ public class Doacao implements Serializable {
     @ManyToOne
     @JoinColumn(name = "cd_id")
     private CentroDistribuicao centroDistribuicao;
-    @OneToOne
+    @ManyToOne
     @JoinColumn(name = "item_id")
     private Item item;
 
