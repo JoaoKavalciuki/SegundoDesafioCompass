@@ -3,7 +3,6 @@ package org.example;
 import java.util.Scanner;
 
 import org.example.entities.Abrigo;
-import org.example.repositories.AbrigoRepository;
 import org.example.services.AbrigoServiceImpl;
 import org.example.services.CentroDistribuicaoServiceImpl;
 import org.example.services.ItemServiceImpl;
@@ -88,10 +87,10 @@ public class Main {
                     doacaoSystemUtil.saveDoacao();
                     break;
                 case 4:
-                    System.out.println("Implementando...");
+                    doacaoSystemUtil.update();
                     break;
                 case 5:
-                    System.out.println("Implementando...");
+                    doacaoSystemUtil.deleteById();
                     break;
                 case 6:
                     break;

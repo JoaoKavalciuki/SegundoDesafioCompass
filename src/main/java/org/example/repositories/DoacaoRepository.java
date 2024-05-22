@@ -47,4 +47,19 @@ public class DoacaoRepository {
                 .getResultList();
     }
 
+    public void update(Doacao toUpdate) {
+        em.getTransaction().begin();
+        em.merge(toUpdate);
+        em.getTransaction().commit();
+    }
+
+    public Doacao findById(Long id) {
+        return em.find(Doacao.class, id);
+    }
+
+    public void deleteById(Long id) {
+        em.getTransaction().begin();
+        em.remove(findById(id));
+        em.getTransaction().commit();
+    }
 }

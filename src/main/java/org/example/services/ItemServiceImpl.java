@@ -3,10 +3,11 @@ package org.example.services;
 import java.util.List;
 
 import org.example.entities.Item;
+import org.example.exceptions.DuplicateEntryException;
+import org.example.exceptions.IllegalEntryException;
+import org.example.exceptions.ResourceNotFoundException;
 import org.example.repositories.ItemRepository;
 import org.example.services.interfaces.ItemService;
-
-import jakarta.persistence.EntityNotFoundException;
 
 public class ItemServiceImpl implements ItemService {
 
@@ -30,36 +31,56 @@ public class ItemServiceImpl implements ItemService {
     public Item findById(Long id) {
         Item item = itemRepository.findById(id);
         if (item == null) {
-            throw new EntityNotFoundException("Item não encontrado com ID: " + id);
+            throw new ResourceNotFoundException("Item não encontrado com ID: " + id);
         }
         return item;
     }
 
     @Override
     public void save(Item item) {
-        if (findByName(item.getItemTipo()) != null) {
-            throw new IllegalArgumentException("Já existe um item com este nome no banco de dados");
+        try {
+            if (findByName(item.getItemTipo()) != null) {
+                throw new DuplicateEntryException("Já existe um item com este nome no banco de dados");
+            }
+            itemRepository.save(item);
+        } catch (DuplicateEntryException e) {
+            System.out.println("Erro: " + e.getMessage());
         }
-        itemRepository.save(item);
     }
 
     @Override
     public void update(String novoNome, Long id) {
-        if (id <= 31) {
-            throw new IllegalArgumentException("O item deste id não pode ser alterado");
+        try {
+            if (id <= 31) {
+                throw new IllegalEntryException("O item deste id não pode ser alterado");
+            }
+            Item old = this.findById(id);
+            Item updated = new Item(old.getId(), old.getCategoria(), novoNome, old.getGenero(), old.getTamanho());
+            itemRepository.update(updated);
+        } catch (IllegalEntryException | ResourceNotFoundException e) {
+            System.out.println("Erro: " + e.getMessage());
         }
-        Item old = this.findById(id);
-        Item updated = new Item(old.getId(), old.getCategoria(), novoNome, old.getGenero(), old.getTamanho());
-        itemRepository.update(updated);
     }
 
     @Override
     public Item findByName(String name) {
-        return itemRepository.findByName(name);
+        Item item = itemRepository.findByName(name);
+        if (item == null) {
+            throw new ResourceNotFoundException("Não existe um item com este nome. Nome: " + name);
+        }
+        return item;
     }
 
     @Override
     public void deleteById(Long id) {
-        itemRepository.deleteById(id);
+        try {
+            if (id <= 31) {
+                throw new IllegalEntryException("O item deste id não pode ser excluído");
+            }
+            Item item = findById(id);
+            itemRepository.deleteById(item.getId());
+        } catch (IllegalEntryException | ResourceNotFoundException e) {
+            System.out.println("Erro: " + e.getMessage());
+        }
     }
 }

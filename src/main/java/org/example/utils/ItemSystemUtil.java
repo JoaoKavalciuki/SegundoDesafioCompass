@@ -1,5 +1,7 @@
 package org.example.utils;
 
+import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
 import java.util.Scanner;
 
@@ -30,10 +32,18 @@ public class ItemSystemUtil {
     }
 
     public String getCategoria() {
+        List<String> categorias = new ArrayList<>(Arrays.asList("Roupas", "Produtos de Higiene", "Alimentos"));
         System.out.println("Categorias:\n1 - Roupas.\n2 - Produtos de Higiene\n3 - Alimentos");
-        System.out.println("Qual categoria? Digite a palavra correspodente à categoria.");
-        String categoria = sc.nextLine();
-        return categoria;
+        System.out.println("Qual categoria? Digite o número correspodente à categoria.");
+        int categoriaInt = sc.nextInt();
+        sc.nextLine();
+        String categoriaStr = "";
+        for (String cat : categorias) {
+            if (categorias.indexOf(cat) + 1 == categoriaInt) {
+                categoriaStr = cat;
+            }
+        }
+        return categoriaStr;
     }
 
     public Item getItem() {
@@ -45,9 +55,7 @@ public class ItemSystemUtil {
     }
 
     public void save() {
-        System.out.println("Categorias:\n1 - Roupas.\n2 - Produtos de Higiene\n3 - Alimentos");
-        System.out.println("Qual categoria? Digite a palavra correspodente à categoria.");
-        String categoria = sc.nextLine();
+        String categoria = this.getCategoria();
         System.out.println("Qual o nome do item?");
         String nome = sc.nextLine();
         if (categoria.equalsIgnoreCase("roupas")) {
@@ -74,7 +82,7 @@ public class ItemSystemUtil {
     }
 
     public void deleteById() {
-        this.listAll();
+        this.listByCategoria();
         System.out.println("Digite o id correspodente ao item que será deletado: ");
         Long id = sc.nextLong();
         sc.nextLine();
