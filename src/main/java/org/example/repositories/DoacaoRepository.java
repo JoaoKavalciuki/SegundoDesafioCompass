@@ -23,8 +23,8 @@ public class DoacaoRepository {
     }
 
     public Integer calcularQuantidadeTotal(Item item, CentroDistribuicao centroDistribuicao) {
-        String query = "SELECT SUM(d.quantidade) FROM Doacao d " +
-                "WHERE d.item.categoria = :categoria AND d.centroDistribuicao = :centroDistribuicao";
+        String query = "SELECT SUM(e.quantidade) FROM EstoqueCentro e " +
+                "WHERE e.item.categoria = :categoria AND e.centroDistribuicao = :centroDistribuicao";
         var total = em.createQuery(query, Long.class)
                 .setParameter("categoria", item.getCategoria())
                 .setParameter("centroDistribuicao", centroDistribuicao)
