@@ -5,6 +5,7 @@ import java.util.Optional;
 
 import org.example.entities.Doacao;
 import org.example.entities.EstoqueCentro;
+import org.example.exceptions.IllegalEntryException;
 import org.example.exceptions.ResourceNotFoundException;
 import org.example.repositories.DoacaoRepository;
 import org.example.repositories.EstoqueCentroRepository;
@@ -48,16 +49,18 @@ public class DoacaoServiceImpl implements DoacaoService {
             estoqueCentroRepository.save(novoEstoqueCentro);
         }
         doacaoRepository.save(doacao);
-        System.out.println("Doação enviada ao centro!");
+        System.out.println("DOAÇÃO ENVIADA AO CENTRO");
     }
 
     @Override
     public List<Doacao> listAll() {
+        System.out.println("LISTA DE DOAÇÕES: ");
         return doacaoRepository.listAll();
     }
 
     @Override
     public List<Doacao> listByCategoria(String categoria) {
+        System.out.println("LISTA DE DOAÇÕES POR CATEGORIA: ");
         return doacaoRepository.listByCategoria(categoria);
     }
 
@@ -80,15 +83,14 @@ public class DoacaoServiceImpl implements DoacaoService {
                             "Estoque do centro não encontrado para o item da doação."));
             int diferenca = novaQuantidade - old.getQuantidade();
             if (diferenca > eC.getQuantidade()) {
-                System.out.println("Quantidade maior que a disponível em estoque");
-                return;
+                throw new IllegalEntryException("Quantidade maior que a disponível em estoque");
             }
-            eC.setQuantidade(eC.getQuantidade() - diferenca);
-            old.setQuantidade(novaQuantidade);
+            eC.setQuantidade(eC.getQuantidade() + diferenca);
             estoqueCentroRepository.save(eC);
-            doacaoRepository.save(old);
-            System.out.println("Quantidade da doação atualizada com sucesso!");
-        } catch (ResourceNotFoundException e) {
+            old.setQuantidade(novaQuantidade);
+            doacaoRepository.update(old);
+            System.out.println("ALTERADO!");
+        } catch (ResourceNotFoundException | IllegalEntryException e) {
             System.out.println("Erro: " + e.getMessage());
         }
     }
@@ -102,6 +104,7 @@ public class DoacaoServiceImpl implements DoacaoService {
             eC.setQuantidade(eC.getQuantidade() - toDelete.getQuantidade());
             estoqueCentroRepository.save(eC);
             doacaoRepository.deleteById(id);
+            System.out.println("DELETADO!");
         } catch (ResourceNotFoundException e) {
             System.out.println("Erro: " + e.getMessage());
         }

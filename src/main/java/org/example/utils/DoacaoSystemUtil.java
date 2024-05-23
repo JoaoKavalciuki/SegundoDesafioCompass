@@ -7,11 +7,10 @@ import java.util.Scanner;
 import org.example.entities.CentroDistribuicao;
 import org.example.entities.Doacao;
 import org.example.entities.Item;
+import org.example.exceptions.ResourceNotFoundException;
 import org.example.services.CentroDistribuicaoServiceImpl;
 import org.example.services.DoacaoServiceImpl;
 import org.example.services.ItemServiceImpl;
-
-import jakarta.persistence.EntityNotFoundException;
 
 public class DoacaoSystemUtil {
     private final DoacaoServiceImpl doacaoService = new DoacaoServiceImpl();
@@ -19,14 +18,18 @@ public class DoacaoSystemUtil {
     private final CentroSystemUtil centroUtil = new CentroSystemUtil(new CentroDistribuicaoServiceImpl());
     private final ItemSystemUtil itemUtil = new ItemSystemUtil(new ItemServiceImpl());
 
-    public void saveDoacao() throws EntityNotFoundException {
-        Item item = itemUtil.getItem();
-        CentroDistribuicao centro = centroUtil.getCentro();
-        System.out.println("Qual a quantidade?");
-        int quantidade = sc.nextInt();
-        sc.nextLine();
-        Doacao doacao = new Doacao(null, quantidade, LocalDate.now(), centro, item);
-        doacaoService.save(doacao);
+    public void saveDoacao() {
+        try {
+            Item item = itemUtil.getItem();
+            CentroDistribuicao centro = centroUtil.getCentro();
+            System.out.println("Qual a quantidade?");
+            int quantidade = sc.nextInt();
+            sc.nextLine();
+            Doacao doacao = new Doacao(null, quantidade, LocalDate.now(), centro, item);
+            doacaoService.save(doacao);
+        } catch (ResourceNotFoundException e) {
+            System.out.println("ERRO: " + e.getMessage());
+        }
     }
 
     public void listByCategoria() {

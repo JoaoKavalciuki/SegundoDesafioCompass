@@ -3,10 +3,9 @@ package org.example.services;
 import java.util.List;
 
 import org.example.entities.CentroDistribuicao;
+import org.example.exceptions.ResourceNotFoundException;
 import org.example.repositories.CentroDistribuicaoRepository;
 import org.example.services.interfaces.CentroDistribuicaoService;
-
-import jakarta.persistence.EntityNotFoundException;
 
 public class CentroDistribuicaoServiceImpl implements CentroDistribuicaoService {
 
@@ -27,7 +26,7 @@ public class CentroDistribuicaoServiceImpl implements CentroDistribuicaoService 
     public CentroDistribuicao findById(Long id) {
         CentroDistribuicao centro = centroDistribuicaoRepository.findById(id);
         if (centro == null) {
-            throw new EntityNotFoundException("Centro de distribuição não encontrado com ID: " + id);
+            throw new ResourceNotFoundException("Centro de distribuição não encontrado com ID: " + id);
         }
         return centro;
     }

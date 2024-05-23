@@ -6,6 +6,7 @@ import java.util.List;
 import java.util.Scanner;
 
 import org.example.entities.Item;
+import org.example.exceptions.ResourceNotFoundException;
 import org.example.services.interfaces.ItemService;
 
 public class ItemSystemUtil {
@@ -17,7 +18,7 @@ public class ItemSystemUtil {
     }
 
     public void listByCategoria() {
-        String categoria = getCategoria();
+        String categoria = this.getCategoria();
         List<Item> itens = itemService.findByCategoria(categoria);
         for (Item i : itens) {
             System.out.println(i);
@@ -33,17 +34,23 @@ public class ItemSystemUtil {
 
     public String getCategoria() {
         List<String> categorias = new ArrayList<>(Arrays.asList("Roupas", "Produtos de Higiene", "Alimentos"));
-        System.out.println("Categorias:\n1 - Roupas.\n2 - Produtos de Higiene\n3 - Alimentos");
-        System.out.println("Qual categoria? Digite o número correspodente à categoria.");
-        int categoriaInt = sc.nextInt();
-        sc.nextLine();
-        String categoriaStr = "";
-        for (String cat : categorias) {
-            if (categorias.indexOf(cat) + 1 == categoriaInt) {
-                categoriaStr = cat;
+        while (true) {
+            System.out.println("Categorias:\n1 - Roupas.\n2 - Produtos de Higiene\n3 - Alimentos");
+            System.out.println("Qual categoria? Digite o número correspondente à categoria.");
+            try {
+                int categoriaInt = sc.nextInt();
+                sc.nextLine();
+                if (categoriaInt < 1 || categoriaInt > categorias.size()) {
+                    throw new ResourceNotFoundException("Categoria não existe!");
+                }
+                return categorias.get(categoriaInt - 1);
+            } catch (ResourceNotFoundException e) {
+                System.out.println("ERRO: " + e.getMessage());
+            } catch (Exception e) {
+                System.out.println("ERRO: Entrada inválida. Digite apenas inteiros");
+                sc.nextLine();
             }
         }
-        return categoriaStr;
     }
 
     public Item getItem() {
@@ -56,6 +63,11 @@ public class ItemSystemUtil {
 
     public void save() {
         String categoria = this.getCategoria();
+        System.out.println("Itens já cadastrados desta categoria: ");
+        List<Item> itens = itemService.findByCategoria(categoria);
+        for (Item i : itens) {
+            System.out.println(i);
+        }
         System.out.println("Qual o nome do item?");
         String nome = sc.nextLine();
         if (categoria.equalsIgnoreCase("roupas")) {
