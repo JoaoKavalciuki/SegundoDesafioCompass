@@ -2,6 +2,8 @@ package org.example.entities;
 
 import jakarta.persistence.*;
 
+import java.io.Serializable;
+
 @Entity
 @Table(name = "abrigos")
 public class Abrigo {
@@ -32,6 +34,16 @@ public class Abrigo {
     private double ocupacao;
 
     public Abrigo() {
+    }
+
+    public Abrigo(int capacidade, String email, String endereco, String nome, double ocupacao, String responsavel, String telefone) {
+        this.capacidade = capacidade;
+        this.email = email;
+        this.endereco = endereco;
+        this.nome = nome;
+        this.ocupacao = ocupacao;
+        this.responsavel = responsavel;
+        this.telefone = telefone;
     }
 
     public int getCapacidade() {

@@ -1,32 +1,30 @@
 package org.example.repositories;
 
-import jakarta.persistence.EntityManager;
-import jakarta.persistence.EntityManagerFactory;
-import jakarta.persistence.Persistence;
-import org.example.entities.CentroDistribuicao;
-
 import java.util.List;
 
-public class CentroDistribuicaoRepository {
+import org.example.entities.CentroDistribuicao;
+import org.example.utils.JPAUtil;
 
-    private EntityManagerFactory emf;
+import jakarta.persistence.EntityManager;
+
+public class CentroDistribuicaoRepository {
     private EntityManager em;
 
-    public CentroDistribuicaoRepository(){
-        emf = Persistence.createEntityManagerFactory("desafio2");
-        em = emf.createEntityManager();
+    public CentroDistribuicaoRepository() {
+        em = JPAUtil.getEntityManager();
     }
 
     public void save(CentroDistribuicao centroDistribuicao) {
         em.getTransaction().begin();
         em.persist(centroDistribuicao);
         em.getTransaction().commit();
-        em.close();
-        emf.close();
     }
 
     public List<CentroDistribuicao> findAll() {
-        return em.createQuery("FROM CentroDistribuicao", CentroDistribuicao.class).getResultList(); //JPQL
+        return em.createQuery("FROM " + CentroDistribuicao.class.getName(), CentroDistribuicao.class).getResultList();
     }
 
+    public CentroDistribuicao findById(Long id) {
+        return em.find(CentroDistribuicao.class, id);
+    }
 }

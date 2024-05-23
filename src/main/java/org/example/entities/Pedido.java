@@ -1,53 +1,53 @@
 package org.example.entities;
 
 import jakarta.persistence.*;
-import org.example.entities.enums.StatusPedido;
 
+import java.io.Serializable;
 import java.time.Instant;
+import java.util.HashSet;
 import java.util.List;
+import java.util.Objects;
+import java.util.Set;
+
+import org.example.entities.enums.StatusPedido;
 
 @Entity
 @Table(name = "pedidos")
-public class Pedido {
+public class Pedido implements Serializable {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
     @ManyToOne
-    @JoinColumn(name = "abrigo_id", nullable = false)
+    @JoinColumn(name = "abrigo_id")
     private Abrigo abrigo;
 
-    @Column(nullable = false, columnDefinition = "TIMESTAMP DEFAULT CURRENT_TIMESTAMP")
-    private Instant dataPedido;
-
-    @Column(nullable = false)
-    @Enumerated(EnumType.STRING)
+    @Enumerated(EnumType.STRING) // ARMAZENA A STRING E NÃO O INDICE DO ENUM
     private StatusPedido statusPedido;
 
-    @Column(nullable = false, columnDefinition = "VARCHAR(255) DEFAULT ''")
-    private String motivoRecusa;
+    private String motivoRecusa; // PODE SER TEXT NO LUGAR DE STRING
 
-    @OneToMany(mappedBy = "pedido", cascade = CascadeType.ALL)
-    private List<PedidoItem> itens;
+    @OneToOne
+    @JoinColumn(name = "item_id")
+    private Item item;
 
+    @ManyToMany
+    @JoinTable(name = "tb_pedidos_centro",
+            joinColumns = @JoinColumn(name = "id_produto"),
+            inverseJoinColumns = @JoinColumn(name = "id_centro"))
+    private Set<CentroDistribuicao> centrosDeDistribuicao = new HashSet<>();
+
+    private Integer quantidade;
     public Pedido() {
     }
 
-    public Abrigo getAbrigo() {
-        return abrigo;
-    }
-
-    public void setAbrigo(Abrigo abrigo) {
+    public Pedido(Abrigo abrigo, StatusPedido statusPedido, String motivoRecusa, Item item, Integer quantidade) {
         this.abrigo = abrigo;
-    }
-
-    public Instant getDataPedido() {
-        return dataPedido;
-    }
-
-    public void setDataPedido(Instant dataPedido) {
-        this.dataPedido = dataPedido;
+        this.statusPedido = statusPedido;
+        this.motivoRecusa = motivoRecusa;
+        this.item = item;
+        this.quantidade = quantidade;
     }
 
     public Long getId() {
@@ -58,12 +58,20 @@ public class Pedido {
         this.id = id;
     }
 
-    public List<PedidoItem> getItens() {
-        return itens;
+    public Abrigo getAbrigo() {
+        return abrigo;
     }
 
-    public void setItens(List<PedidoItem> itens) {
-        this.itens = itens;
+    public void setAbrigo(Abrigo abrigo) {
+        this.abrigo = abrigo;
+    }
+
+    public StatusPedido getStatusPedido() {
+        return statusPedido;
+    }
+
+    public void setStatusPedido(StatusPedido statusPedido) {
+        this.statusPedido = statusPedido;
     }
 
     public String getMotivoRecusa() {
@@ -74,11 +82,49 @@ public class Pedido {
         this.motivoRecusa = motivoRecusa;
     }
 
-    public StatusPedido getStatusPedido() {
-        return statusPedido;
+    public Item getItem() {
+        return item;
     }
 
-    public void setStatusPedido(StatusPedido statusPedido) {
-        this.statusPedido = statusPedido;
+    public void setItem(Item item) {
+        this.item = item;
+    }
+
+    public Set<CentroDistribuicao> getCentrosDeDistribuicao() {
+        return centrosDeDistribuicao;
+    }
+
+    public Integer getQuantidade() {
+        return quantidade;
+    }
+
+    public void setQuantidade(Integer quantidade) {
+        this.quantidade = quantidade;
+    }
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+        Pedido pedido = (Pedido) o;
+        return Objects.equals(id, pedido.id);
+    }
+
+    @Override
+    public int hashCode() {
+        return Objects.hash(id);
+    }
+
+
+    @Override
+    public String toString() {
+        return "Pedido{" +
+                "abrigo=" + abrigo +
+                ", statusPedido=" + statusPedido +
+                ", motivoRecusa='" + motivoRecusa + '\'' +
+                ", item=" + item +
+                ", centrosDeDistribuicao=" + centrosDeDistribuicao +
+                ", quantidade=" + quantidade +
+                '}';
     }
 }

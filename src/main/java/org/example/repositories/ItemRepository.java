@@ -1,25 +1,44 @@
 package org.example.repositories;
 
-import jakarta.persistence.EntityManager;
-import jakarta.persistence.Persistence;
-import org.example.entities.Abrigo;
-import org.example.entities.Item;
-
 import java.util.List;
+
+import org.example.entities.Item;
+import org.example.utils.JPAUtil;
+
+import jakarta.persistence.EntityManager;
+import jakarta.persistence.NoResultException;
 
 public class ItemRepository {
     private EntityManager em;
 
     public ItemRepository() {
-        this.em = Persistence.createEntityManagerFactory("desafio2").createEntityManager();
+        em = JPAUtil.getEntityManager();
+    }
+
+    public List<Item> findByCategoria(String categoria) {
+        String query = "SELECT i FROM Item i WHERE i.categoria = :categoria";
+        return em.createQuery(query, Item.class)
+                .setParameter("categoria", categoria)
+                .getResultList();
     }
 
     public List<Item> findAll() {
-        return em.createQuery("SELECT i FROM Item i", Item.class).getResultList();
+        return em.createQuery("FROM " + Item.class.getName(), Item.class).getResultList();
     }
 
     public Item findById(Long id) {
         return em.find(Item.class, id);
+    }
+
+    public Item findByName(String tipo) {
+        try {
+            String query = "SELECT i FROM Item i WHERE i.itemTipo = :tipo";
+            return em.createQuery(query, Item.class)
+                    .setParameter("tipo", tipo)
+                    .getSingleResult();
+        } catch (NoResultException e) {
+            return null;
+        }
     }
 
     public void save(Item item) {
@@ -28,13 +47,15 @@ public class ItemRepository {
         em.getTransaction().commit();
     }
 
-    public List<Item> findItensByAbrigo(Abrigo abrigo) {
-        return em.createQuery("SELECT i FROM Item i JOIN i.pedidoItens pi JOIN pi.pedido p WHERE p.abrigo = :abrigo", Item.class)
-                .setParameter("abrigo", abrigo)
-                .getResultList();
+    public void update(Item toUpdate) {
+        em.getTransaction().begin();
+        em.merge(toUpdate);
+        em.getTransaction().commit();
     }
 
-    public void close() {
-        em.close();
+    public void deleteById(Long id) {
+        em.getTransaction().begin();
+        em.remove(findById(id));
+        em.getTransaction().commit();
     }
 }
