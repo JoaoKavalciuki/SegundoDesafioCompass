@@ -15,9 +15,7 @@ import jakarta.persistence.Table;
 
 @Entity
 @Table(name = "doacoes")
-public class Doacao implements Serializable {
-    private static final long serialVersionUID = 1L;
-
+public class Doacao{
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;

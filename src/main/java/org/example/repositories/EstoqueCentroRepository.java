@@ -60,4 +60,16 @@ public class EstoqueCentroRepository {
             return Optional.empty();
         }
     }
+
+    public List<EstoqueCentro> findEstoquesByItemTipo(String tipo){
+        List<EstoqueCentro> estoquesCentros = em.createQuery(
+                """
+                select estoques from EstoqueCentro estoques
+                left join Item on estoques.item.id = Item.id
+                where Item.itemTipo = :tipo
+                """,
+                EstoqueCentro.class).setParameter("tipo", tipo).getResultList();
+
+        return estoquesCentros;
+    }
 }
