@@ -89,10 +89,10 @@ public class Main {
                     doacaoSystemUtil.saveDoacao();
                     break;
                 case 4:
-                    System.out.println("Implementando...");
+                    doacaoSystemUtil.update();
                     break;
                 case 5:
-                    System.out.println("Implementando...");
+                    doacaoSystemUtil.deleteById();
                     break;
                 case 6:
                     break;

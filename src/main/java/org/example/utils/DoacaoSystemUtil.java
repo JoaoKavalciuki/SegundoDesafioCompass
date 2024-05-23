@@ -52,4 +52,22 @@ public class DoacaoSystemUtil {
         }
     }
 
+    public void update() {
+        this.listByCategoria();
+        System.out.println("Digite o ID da doação a ser modificada: ");
+        Long id = sc.nextLong();
+        sc.nextLine();
+        System.out.println("Digite a nova quantidade: ");
+        int quantidade = sc.nextInt();
+        sc.nextLine();
+        doacaoService.update(quantidade, id);
+    }
+
+    public void deleteById() {
+        this.listByCategoria();
+        System.out.println("Digite o ID da doação a ser deletada: ");
+        Long id = sc.nextLong();
+        sc.nextLine();
+        doacaoService.deleteById(id);
+    }
 }

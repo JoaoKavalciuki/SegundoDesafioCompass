@@ -10,4 +10,10 @@ public interface DoacaoService {
     List<Doacao> listAll();
 
     List<Doacao> listByCategoria(String categoria);
+
+    void update(int novaQuantidade, Long id);
+
+    Doacao findById(Long id);
+
+    void deleteById(Long id);
 }

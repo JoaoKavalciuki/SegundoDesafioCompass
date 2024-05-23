@@ -23,8 +23,8 @@ public class DoacaoRepository {
     }
 
     public Integer calcularQuantidadeTotal(Item item, CentroDistribuicao centroDistribuicao) {
-        String query = "SELECT SUM(d.quantidade) FROM Doacao d " +
-                "WHERE d.item.categoria = :categoria AND d.centroDistribuicao = :centroDistribuicao";
+        String query = "SELECT SUM(e.quantidade) FROM EstoqueCentro e " +
+                "WHERE e.item.categoria = :categoria AND e.centroDistribuicao = :centroDistribuicao";
         var total = em.createQuery(query, Long.class)
                 .setParameter("categoria", item.getCategoria())
                 .setParameter("centroDistribuicao", centroDistribuicao)
@@ -47,4 +47,19 @@ public class DoacaoRepository {
                 .getResultList();
     }
 
+    public void update(Doacao toUpdate) {
+        em.getTransaction().begin();
+        em.merge(toUpdate);
+        em.getTransaction().commit();
+    }
+
+    public Doacao findById(Long id) {
+        return em.find(Doacao.class, id);
+    }
+
+    public void deleteById(Long id) {
+        em.getTransaction().begin();
+        em.remove(findById(id));
+        em.getTransaction().commit();
+    }
 }
