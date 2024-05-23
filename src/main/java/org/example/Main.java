@@ -4,17 +4,17 @@ import java.util.Scanner;
 
 import org.example.entities.Abrigo;
 import org.example.repositories.AbrigoRepository;
+import org.example.repositories.PedidoRepository;
 import org.example.services.AbrigoServiceImpl;
 import org.example.services.CentroDistribuicaoServiceImpl;
 import org.example.services.ItemServiceImpl;
-import org.example.utils.CentroSystemUtil;
-import org.example.utils.DoacaoSystemUtil;
-import org.example.utils.ItemSystemUtil;
-import org.example.utils.JPAUtil;
+import org.example.services.PedidoServiceImpl;
+import org.example.utils.*;
 
 import jakarta.persistence.EntityManager;
 
 public class Main {
+    PedidoSystemUtil pedidoSystemUtil;
     public static void main(String[] args) {
         JPAUtil.initialize();
         EntityManager em = JPAUtil.getEntityManager();
@@ -23,6 +23,7 @@ public class Main {
         CentroSystemUtil centroSystemUtil = new CentroSystemUtil(new CentroDistribuicaoServiceImpl());
         ItemSystemUtil itemSystemUtil = new ItemSystemUtil(new ItemServiceImpl());
         AbrigoServiceImpl abrigoService = new AbrigoServiceImpl(em, sc);
+        PedidoSystemUtil pedidoSystemUtil = new PedidoSystemUtil(abrigoService, new ItemServiceImpl(), new PedidoServiceImpl(new PedidoRepository()));
 
         int op = 0;
         while (op != 5) {
@@ -32,7 +33,7 @@ public class Main {
                     centroSystemUtil.listCentros();
                     break;
                 case 2:
-                    abrigoMenu(sc, abrigoService);
+                    abrigoMenu(sc, abrigoService, pedidoSystemUtil);
                     break;
                 case 3:
                     itemMenu(sc, itemSystemUtil);
@@ -137,7 +138,7 @@ public class Main {
         }
     }
 
-    private static void abrigoMenu(Scanner sc, AbrigoServiceImpl abrigoService) {
+    private static void abrigoMenu(Scanner sc, AbrigoServiceImpl abrigoService, PedidoSystemUtil pedidoSystemUtil) {
         int op = 0;
         while (op != 5) {
             System.out.println("Menu de Abrigos:");
@@ -155,6 +156,20 @@ public class Main {
                     break;
                 case 2:
                     abrigoService.listarAbrigos();
+                    System.out.println("Desja fazer um pedido de algum item para algum abrigo? (S/N)");
+                    char resposta = sc.next().charAt(0);
+                    sc.nextLine();
+
+                    while (resposta != 'S' && resposta != 'N'){
+                        System.out.print("A resposta precisa ser S ou N. Insira um resposta válida: ");
+                        resposta = sc.next().charAt(0);
+                        sc.nextLine();
+                    }
+
+                    if(resposta == 'S'){
+                        pedidoSystemUtil.fazerDoacao();
+                    }
+
                     break;
                 case 3:
                     System.out.print("ID do Abrigo a ser atualizado: ");
