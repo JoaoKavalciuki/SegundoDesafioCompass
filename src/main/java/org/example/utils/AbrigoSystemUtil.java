@@ -18,7 +18,7 @@ public class AbrigoSystemUtil {
     }
 
     public void create(){
-        abrigoService.listarAbrigos();
+        abrigoService.createAbrigo(new Abrigo());
     }
 
     public void listAbrigos(){
