@@ -104,6 +104,11 @@ public class CentroDistribuicao implements Serializable {
         this.cep = cep;
     }
 
+
+    public List<Pedido> getPedidos() {
+        return pedidos;
+    }
+
     @Override
     public int hashCode() {
         final int prime = 31;

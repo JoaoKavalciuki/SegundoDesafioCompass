@@ -64,11 +64,9 @@ public class EstoqueCentroRepository {
     public List<EstoqueCentro> findEstoquesByItemTipo(String tipo){
         List<EstoqueCentro> estoquesCentros = em.createQuery(
                 """
-                select estoques from EstoqueCentro estoques
-                left join Item on estoques.item.id = Item.id
-                where Item.itemTipo = :tipo
+                    SELECT e FROM EstoqueCentro e LEFT JOIN e.item i WHERE i.itemTipo = :itemTipo
                 """,
-        EstoqueCentro.class).setParameter("tipo", tipo).getResultList();
+        EstoqueCentro.class).setParameter("itemTipo", tipo).getResultList();
 
         return estoquesCentros;
     }

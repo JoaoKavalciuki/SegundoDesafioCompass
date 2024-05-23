@@ -28,13 +28,13 @@ public class Pedido implements Serializable {
 
     private String motivoRecusa; // PODE SER TEXT NO LUGAR DE STRING
 
-    @OneToOne
+    @ManyToOne
     @JoinColumn(name = "item_id")
     private Item item;
 
     @ManyToMany
     @JoinTable(name = "tb_pedidos_centro",
-            joinColumns = @JoinColumn(name = "id_produto"),
+            joinColumns = @JoinColumn(name = "id_pedido"),
             inverseJoinColumns = @JoinColumn(name = "id_centro"))
     private Set<CentroDistribuicao> centrosDeDistribuicao = new HashSet<>();
 
