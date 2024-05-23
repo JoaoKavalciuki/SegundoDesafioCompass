@@ -11,7 +11,7 @@ public interface ItemService {
 
     Item findById(Long id);
 
-    Item findByName(String name);
+    boolean findByName(String name);
 
     void save(Item item);
 

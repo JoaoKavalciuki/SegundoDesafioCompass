@@ -6,6 +6,7 @@ import org.example.entities.Item;
 import org.example.utils.JPAUtil;
 
 import jakarta.persistence.EntityManager;
+import jakarta.persistence.NoResultException;
 
 public class ItemRepository {
     private EntityManager em;
@@ -29,11 +30,15 @@ public class ItemRepository {
         return em.find(Item.class, id);
     }
 
-    public Item findByName(String nome) {
-        String query = "SELECT i FROM Item i WHERE i.itemNome = :nome";
-        return em.createQuery(query, Item.class)
-                .setParameter("nome", nome)
-                .getSingleResult();
+    public Item findByName(String tipo) {
+        try {
+            String query = "SELECT i FROM Item i WHERE i.itemTipo = :tipo";
+            return em.createQuery(query, Item.class)
+                    .setParameter("tipo", tipo)
+                    .getSingleResult();
+        } catch (NoResultException e) {
+            return null;
+        }
     }
 
     public void save(Item item) {
