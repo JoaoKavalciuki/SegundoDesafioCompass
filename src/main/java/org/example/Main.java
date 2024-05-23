@@ -3,9 +3,18 @@ package org.example;
 import java.util.Scanner;
 
 import org.example.repositories.PedidoRepository;
-import org.example.services.*;
+import org.example.services.AbrigoServiceImpl;
+import org.example.services.CentroDistribuicaoServiceImpl;
+import org.example.services.EstoqueAbrigoServiceImpl;
+import org.example.services.ItemServiceImpl;
+import org.example.services.PedidoServiceImpl;
 import org.example.services.interfaces.EstoqueAbrigoService;
-import org.example.utils.*;
+import org.example.utils.AbrigoSystemUtil;
+import org.example.utils.CentroSystemUtil;
+import org.example.utils.DoacaoSystemUtil;
+import org.example.utils.ItemSystemUtil;
+import org.example.utils.JPAUtil;
+import org.example.utils.PedidoSystemUtil;
 
 import jakarta.persistence.EntityManager;
 
@@ -18,10 +27,12 @@ public class Main {
         DoacaoSystemUtil doacaoSystemUtil = new DoacaoSystemUtil();
         CentroSystemUtil centroSystemUtil = new CentroSystemUtil(new CentroDistribuicaoServiceImpl());
         ItemSystemUtil itemSystemUtil = new ItemSystemUtil(new ItemServiceImpl());
-        EstoqueAbrigoService estoqueAbrigoService = new EstoqueAbrigoServiceImpl(em,sc);
-        AbrigoServiceImpl abrigoService = new AbrigoServiceImpl(em,sc, estoqueAbrigoService);
-        AbrigoSystemUtil abrigoSystemUtil = new AbrigoSystemUtil(new AbrigoServiceImpl(em, sc, estoqueAbrigoService), new EstoqueAbrigoServiceImpl(em, sc));
-        PedidoSystemUtil pedidoSystemUtil = new PedidoSystemUtil(abrigoService, new ItemServiceImpl(), new PedidoServiceImpl(new PedidoRepository()));
+        EstoqueAbrigoService estoqueAbrigoService = new EstoqueAbrigoServiceImpl(em, sc);
+        AbrigoServiceImpl abrigoService = new AbrigoServiceImpl(em, sc, estoqueAbrigoService);
+        AbrigoSystemUtil abrigoSystemUtil = new AbrigoSystemUtil(new AbrigoServiceImpl(em, sc, estoqueAbrigoService),
+                new EstoqueAbrigoServiceImpl(em, sc));
+        PedidoSystemUtil pedidoSystemUtil = new PedidoSystemUtil(abrigoService, new ItemServiceImpl(),
+                new PedidoServiceImpl(new PedidoRepository()));
 
         int op = 0;
         while (op != 5) {
@@ -159,15 +170,15 @@ public class Main {
                     char resposta = sc.next().charAt(0);
                     sc.nextLine();
 
-                    while (resposta != 'S' && resposta != 'N'){
+                    while (resposta != 'S' && resposta != 'N') {
                         System.out.print("A resposta precisa ser S ou N. Insira um resposta válida: ");
                         resposta = sc.next().charAt(0);
                         sc.nextLine();
                     }
 
-                    if(resposta == 'S'){
-                        pedidoSystemutil.fazerDoacao();
-                    }
+                    // if (resposta == 'S') {
+                    // pedidoSystemutil.fazerDoacao();
+                    // }
                     break;
                 case 3:
                     abrigoSystemUtil.update();

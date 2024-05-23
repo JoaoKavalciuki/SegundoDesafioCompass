@@ -49,8 +49,9 @@ public class ItemServiceImpl implements ItemService {
             }
             itemRepository.save(item);
             System.out.println("ITEM INSERIDO");
-        } catch (DuplicateEntryException e) {
+        } catch (DuplicateEntryException | IllegalEntryException e) {
             System.out.println("ERRO: " + e.getMessage());
+            return;
         }
     }
 
@@ -69,6 +70,7 @@ public class ItemServiceImpl implements ItemService {
             System.out.println("ITEM ATUALIZADO");
         } catch (IllegalEntryException | ResourceNotFoundException e) {
             System.out.println("ERRO: " + e.getMessage());
+            return;
         }
     }
 
@@ -89,6 +91,7 @@ public class ItemServiceImpl implements ItemService {
             System.out.println("ITEM DELETADO");
         } catch (IllegalEntryException | ResourceNotFoundException e) {
             System.out.println("ERRO: " + e.getMessage());
+            return;
         }
     }
 }

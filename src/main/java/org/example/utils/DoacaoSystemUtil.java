@@ -1,6 +1,7 @@
 package org.example.utils;
 
 import java.time.LocalDate;
+import java.util.InputMismatchException;
 import java.util.List;
 import java.util.Scanner;
 
@@ -56,21 +57,36 @@ public class DoacaoSystemUtil {
     }
 
     public void update() {
-        this.listByCategoria();
-        System.out.println("Digite o ID da doação a ser modificada: ");
-        Long id = sc.nextLong();
-        sc.nextLine();
-        System.out.println("Digite a nova quantidade: ");
-        int quantidade = sc.nextInt();
-        sc.nextLine();
-        doacaoService.update(quantidade, id);
+        try {
+            this.listByCategoria();
+            System.out.println("Digite o ID da doação a ser modificada: ");
+            Long id = sc.nextLong();
+            sc.nextLine();
+            doacaoService.findById(id);
+            System.out.println("Digite a nova quantidade: ");
+            int quantidade = sc.nextInt();
+            sc.nextLine();
+            doacaoService.update(quantidade, id);
+        } catch (ResourceNotFoundException e) {
+            System.out.println("ERRO: " + e.getMessage());
+        } catch (InputMismatchException e) {
+            System.out.println("ERRO: Entrada inválida. Digite apenas inteiros");
+            sc.nextLine();
+        }
     }
 
     public void deleteById() {
-        this.listByCategoria();
-        System.out.println("Digite o ID da doação a ser deletada: ");
-        Long id = sc.nextLong();
-        sc.nextLine();
-        doacaoService.deleteById(id);
+        try {
+            this.listByCategoria();
+            System.out.println("Digite o ID da doação a ser deletada: ");
+            Long id = sc.nextLong();
+            sc.nextLine();
+            doacaoService.deleteById(id);
+        } catch (ResourceNotFoundException e) {
+            System.out.println("ERRO: " + e.getMessage());
+        } catch (InputMismatchException e) {
+            System.out.println("ERRO: Entrada inválida. Digite apenas inteiros");
+            sc.nextLine();
+        }
     }
 }

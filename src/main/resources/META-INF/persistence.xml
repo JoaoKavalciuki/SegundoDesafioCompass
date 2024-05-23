@@ -5,7 +5,7 @@
             <property name="jakarta.persistence.jdbc.url"
                 value="jdbc:mysql://localhost:3306/desafio2" />
             <property name="jakarta.persistence.jdbc.user" value="root" />
-            <property name="jakarta.persistence.jdbc.password" value="1234567" />
+            <property name="jakarta.persistence.jdbc.password" value="nicolas0708" />
             <property name="hibernate.hbm2ddl.auto" value="update" />
             <property name="hibernate.show_sql" value="false" />
             <property name="hibernate.format_sql" value="false" />
