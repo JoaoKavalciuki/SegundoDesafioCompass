@@ -7,6 +7,7 @@ import org.example.repositories.AbrigoRepository;
 import org.example.services.interfaces.AbrigoService;
 
 import jakarta.persistence.EntityManager;
+import org.example.services.interfaces.EstoqueAbrigoService;
 
 import java.util.List;
 import java.util.Scanner;
@@ -16,12 +17,15 @@ public class AbrigoServiceImpl implements AbrigoService {
     private EntityManager em;
     private AbrigoRepository abrigoRepository;
     private Scanner scanner;
+    private EstoqueAbrigoService estoqueAbrigoService;
 
-    public AbrigoServiceImpl(EntityManager em, Scanner scanner) {
+    public AbrigoServiceImpl(EntityManager em, Scanner scanner, EstoqueAbrigoService estoqueAbrigoService) {
         this.em = em;
         this.abrigoRepository = new AbrigoRepository(em);
         this.scanner = scanner;
+        this.estoqueAbrigoService = estoqueAbrigoService;
     }
+
 
     public void createAbrigo(Abrigo abrigo) {
         try {
@@ -136,4 +140,5 @@ public class AbrigoServiceImpl implements AbrigoService {
             throw new ValidationException("Dados do abrigo são inválidos!");
         }
     }
+
 }

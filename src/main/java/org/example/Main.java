@@ -2,14 +2,10 @@ package org.example;
 
 import java.util.Scanner;
 
-import org.example.entities.Abrigo;
-import org.example.services.AbrigoServiceImpl;
-import org.example.services.CentroDistribuicaoServiceImpl;
-import org.example.services.ItemServiceImpl;
-import org.example.utils.CentroSystemUtil;
-import org.example.utils.DoacaoSystemUtil;
-import org.example.utils.ItemSystemUtil;
-import org.example.utils.JPAUtil;
+import org.example.repositories.PedidoRepository;
+import org.example.services.*;
+import org.example.services.interfaces.EstoqueAbrigoService;
+import org.example.utils.*;
 
 import jakarta.persistence.EntityManager;
 
@@ -18,10 +14,14 @@ public class Main {
         JPAUtil.initialize();
         EntityManager em = JPAUtil.getEntityManager();
         Scanner sc = new Scanner(System.in);
+
         DoacaoSystemUtil doacaoSystemUtil = new DoacaoSystemUtil();
         CentroSystemUtil centroSystemUtil = new CentroSystemUtil(new CentroDistribuicaoServiceImpl());
         ItemSystemUtil itemSystemUtil = new ItemSystemUtil(new ItemServiceImpl());
-        AbrigoServiceImpl abrigoService = new AbrigoServiceImpl(em, sc);
+        EstoqueAbrigoService estoqueAbrigoService = new EstoqueAbrigoServiceImpl(em,sc);
+        AbrigoServiceImpl abrigoService = new AbrigoServiceImpl(em,sc, estoqueAbrigoService);
+        AbrigoSystemUtil abrigoSystemUtil = new AbrigoSystemUtil(new AbrigoServiceImpl(em, sc, estoqueAbrigoService), new EstoqueAbrigoServiceImpl(em, sc));
+        PedidoSystemUtil pedidoSystemUtil = new PedidoSystemUtil(abrigoService, new ItemServiceImpl(), new PedidoServiceImpl(new PedidoRepository()));
 
         int op = 0;
         while (op != 5) {
@@ -31,7 +31,7 @@ public class Main {
                     centroSystemUtil.listCentros();
                     break;
                 case 2:
-                    abrigoMenu(sc, abrigoService);
+                    abrigoMenu(sc, abrigoSystemUtil);
                     break;
                 case 3:
                     itemMenu(sc, itemSystemUtil);
@@ -136,7 +136,7 @@ public class Main {
         }
     }
 
-    private static void abrigoMenu(Scanner sc, AbrigoServiceImpl abrigoService) {
+    private static void abrigoMenu(Scanner sc, AbrigoSystemUtil abrigoSystemUtil) {
         int op = 0;
         while (op != 5) {
             System.out.println("Menu de Abrigos:");
@@ -144,30 +144,41 @@ public class Main {
             System.out.println("2. Listar Abrigos");
             System.out.println("3. Atualizar Abrigo");
             System.out.println("4. Deletar Abrigo");
-            System.out.println("5. Voltar ao Menu Principal");
+            System.out.println("5. Listar Estoque dos Abrigos");
+            System.out.println("6. Voltar ao Menu Principal");
             System.out.print("Escolha uma opção: ");
             op = sc.nextInt();
             sc.nextLine();
             switch (op) {
                 case 1:
-                    abrigoService.createAbrigo(new Abrigo());
+                    abrigoSystemUtil.create();
                     break;
                 case 2:
-                    abrigoService.listarAbrigos();
+                    abrigoSystemUtil.listAbrigos();
+                    System.out.println("Desja fazer um pedido de algum item para algum abrigo? (S/N)");
+                    char resposta = sc.next().charAt(0);
+                    sc.nextLine();
+
+                    while (resposta != 'S' && resposta != 'N'){
+                        System.out.print("A resposta precisa ser S ou N. Insira um resposta válida: ");
+                        resposta = sc.next().charAt(0);
+                        sc.nextLine();
+                    }
+
+                    if(resposta == 'S'){
+                        pedidoSystemutil.fazerDoacao();
+                    }
                     break;
                 case 3:
-                    System.out.print("ID do Abrigo a ser atualizado: ");
-                    Long id = sc.nextLong();
-                    sc.nextLine();
-                    abrigoService.updateAbrigo(id);
+                    abrigoSystemUtil.update();
                     break;
                 case 4:
-                    System.out.print("ID do Abrigo a ser deletado: ");
-                    id = sc.nextLong();
-                    sc.nextLine();
-                    abrigoService.deleteAbrigo(id);
+                    abrigoSystemUtil.delete();
                     break;
                 case 5:
+                    abrigoSystemUtil.listAbrigoEstoque();
+                    break;
+                case 6:
                     System.out.println("Voltando ao Menu Principal");
                     break;
                 default:
