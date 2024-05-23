@@ -2,19 +2,16 @@ package org.example;
 
 import java.util.Scanner;
 
-import org.example.repositories.PedidoRepository;
 import org.example.services.AbrigoServiceImpl;
 import org.example.services.CentroDistribuicaoServiceImpl;
 import org.example.services.EstoqueAbrigoServiceImpl;
 import org.example.services.ItemServiceImpl;
-import org.example.services.PedidoServiceImpl;
 import org.example.services.interfaces.EstoqueAbrigoService;
 import org.example.utils.AbrigoSystemUtil;
 import org.example.utils.CentroSystemUtil;
 import org.example.utils.DoacaoSystemUtil;
 import org.example.utils.ItemSystemUtil;
 import org.example.utils.JPAUtil;
-import org.example.utils.PedidoSystemUtil;
 
 import jakarta.persistence.EntityManager;
 
@@ -31,8 +28,6 @@ public class Main {
         AbrigoServiceImpl abrigoService = new AbrigoServiceImpl(em, sc, estoqueAbrigoService);
         AbrigoSystemUtil abrigoSystemUtil = new AbrigoSystemUtil(new AbrigoServiceImpl(em, sc, estoqueAbrigoService),
                 new EstoqueAbrigoServiceImpl(em, sc));
-        PedidoSystemUtil pedidoSystemUtil = new PedidoSystemUtil(abrigoService, new ItemServiceImpl(),
-                new PedidoServiceImpl(new PedidoRepository()));
 
         int op = 0;
         while (op != 5) {
@@ -175,10 +170,6 @@ public class Main {
                         resposta = sc.next().charAt(0);
                         sc.nextLine();
                     }
-
-                    // if (resposta == 'S') {
-                    // pedidoSystemutil.fazerDoacao();
-                    // }
                     break;
                 case 3:
                     abrigoSystemUtil.update();
