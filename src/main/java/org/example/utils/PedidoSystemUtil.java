@@ -1,11 +1,13 @@
 package org.example.utils;
 
 import org.example.entities.Abrigo;
+import org.example.entities.EstoqueCentro;
 import org.example.entities.Item;
 import org.example.entities.Pedido;
 import org.example.entities.enums.StatusPedido;
 import org.example.exceptions.ResourceNotFoundException;
 import org.example.repositories.AbrigoRepository;
+import org.example.repositories.EstoqueCentroRepository;
 import org.example.repositories.ItemRepository;
 import org.example.services.interfaces.AbrigoService;
 import org.example.services.interfaces.ItemService;
@@ -70,8 +72,20 @@ public class PedidoSystemUtil {
 
         Pedido pedido = new Pedido(abrigo, StatusPedido.PENDENTE, null, itemDoado, quantidade);
 
-        pedidoService.savePedido(pedido);
+        System.out.println(itemDoado.getItemTipo());
 
+        System.out.println("Centros que tem o item do pedido");
+
+        EstoqueCentroRepository estoqueCentroRepository = new EstoqueCentroRepository();
+
+        List<EstoqueCentro> estoques = estoqueCentroRepository.findEstoquesByItemTipo(itemDoado.getItemTipo());
+
+        for(EstoqueCentro estoque: estoques){
+            System.out.println(estoque);
+        }
+
+        pedidoService.savePedido(pedido);
+        System.out.println("Orderm de pedido enviada com sucesso");
 
     }
 }

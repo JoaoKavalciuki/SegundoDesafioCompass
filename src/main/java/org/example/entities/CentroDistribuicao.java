@@ -1,12 +1,10 @@
 package org.example.entities;
 
 import java.io.Serializable;
+import java.util.ArrayList;
+import java.util.List;
 
-import jakarta.persistence.Entity;
-import jakarta.persistence.GeneratedValue;
-import jakarta.persistence.GenerationType;
-import jakarta.persistence.Id;
-import jakarta.persistence.Table;
+import jakarta.persistence.*;
 
 @Entity
 @Table(name = "centros_distribuicao")
@@ -23,6 +21,9 @@ public class CentroDistribuicao implements Serializable {
     private String cidade;
     private String estado;
     private String cep;
+
+    @ManyToMany(mappedBy = "centrosDeDistribuicao")
+    private List<Pedido> pedidos = new ArrayList<>();
 
     public CentroDistribuicao() {
     }
