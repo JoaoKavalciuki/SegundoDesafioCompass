@@ -20,7 +20,7 @@ public class DoacaoServiceImpl implements DoacaoService {
         this.estoqueCentroRepository = new EstoqueCentroRepository();
     }
 
-    public boolean verificaQuantidadeTotal(Doacao doacao) {
+    public boolean verificaQuantidadeAcimaLimite(Doacao doacao) {
         var total = doacaoRepository.calcularQuantidadeTotal(doacao.getItem(), doacao.getCentroDistribuicao());
         if (total + doacao.getQuantidade() > 1000) {
             System.out.println(
@@ -33,7 +33,7 @@ public class DoacaoServiceImpl implements DoacaoService {
 
     @Override
     public void save(Doacao doacao) {
-        if (verificaQuantidadeTotal(doacao))
+        if (verificaQuantidadeAcimaLimite(doacao))
             return;
         Optional<EstoqueCentro> estoqueCentroOpt = estoqueCentroRepository.findByCDeItem(
                 doacao.getCentroDistribuicao().getId(), doacao.getItem().getId());
@@ -54,14 +54,18 @@ public class DoacaoServiceImpl implements DoacaoService {
 
     @Override
     public List<Doacao> listAll() {
-        System.out.println("LISTA DE DOAÇÕES: ");
-        return doacaoRepository.listAll();
+        List<Doacao> doacoes = doacaoRepository.findAll();
+        if (!doacoes.isEmpty())
+            System.out.println("LISTA DE DOAÇÕES: ");
+        return doacoes;
     }
 
     @Override
     public List<Doacao> listByCategoria(String categoria) {
-        System.out.println("LISTA DE DOAÇÕES POR CATEGORIA: ");
-        return doacaoRepository.listByCategoria(categoria);
+        List<Doacao> doacoes = doacaoRepository.findByCategoria(categoria);
+        if (!doacoes.isEmpty())
+            System.out.println("LISTA DE DOAÇÕES POR CATEGORIA : ");
+        return doacoes;
     }
 
     @Override
