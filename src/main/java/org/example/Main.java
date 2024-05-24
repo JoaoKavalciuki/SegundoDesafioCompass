@@ -28,7 +28,8 @@ public class Main {
         AbrigoServiceImpl abrigoService = new AbrigoServiceImpl(em, sc, estoqueAbrigoService);
         AbrigoSystemUtil abrigoSystemUtil = new AbrigoSystemUtil(new AbrigoServiceImpl(em, sc, estoqueAbrigoService),
                 new EstoqueAbrigoServiceImpl(em, sc));
-        PedidoSystemUtil pedidoSystemUtil = new PedidoSystemUtil(abrigoService, new ItemServiceImpl(), new PedidoServiceImpl(new PedidoRepository()));
+        PedidoSystemUtil pedidoSystemUtil = new PedidoSystemUtil(abrigoService, new ItemServiceImpl(),
+                new PedidoServiceImpl(new PedidoRepository()), new CentroDistribuicaoServiceImpl(), new EstoqueCentroServiceImpl(new EstoqueCentroRepository()));
         int op = 0;
         while (op != 5) {
             op = menu(sc);
