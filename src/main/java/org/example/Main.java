@@ -2,6 +2,7 @@ package org.example;
 
 import java.util.Scanner;
 
+import org.example.repositories.EstoqueAbrigoRepository;
 import org.example.repositories.EstoqueCentroRepository;
 import org.example.repositories.PedidoRepository;
 import org.example.services.*;
@@ -21,14 +22,26 @@ public class Main {
         EntityManager em = JPAUtil.getEntityManager();
         Scanner sc = new Scanner(System.in);
 
-        DoacaoSystemUtil doacaoSystemUtil = new DoacaoSystemUtil();
-        CentroSystemUtil centroSystemUtil = new CentroSystemUtil(new CentroDistribuicaoServiceImpl(), new PedidoServiceImpl(new PedidoRepository()), new EstoqueCentroServiceImpl(new EstoqueCentroRepository()));
-        ItemSystemUtil itemSystemUtil = new ItemSystemUtil(new ItemServiceImpl());
-        EstoqueAbrigoService estoqueAbrigoService = new EstoqueAbrigoServiceImpl(em, sc);
+        EstoqueAbrigoService estoqueAbrigoService = new EstoqueAbrigoServiceImpl(new EstoqueAbrigoRepository());
+
         AbrigoServiceImpl abrigoService = new AbrigoServiceImpl(em, sc, estoqueAbrigoService);
+
         AbrigoSystemUtil abrigoSystemUtil = new AbrigoSystemUtil(new AbrigoServiceImpl(em, sc, estoqueAbrigoService),
-                new EstoqueAbrigoServiceImpl(em, sc));
-        PedidoSystemUtil pedidoSystemUtil = new PedidoSystemUtil(abrigoService, new ItemServiceImpl(), new PedidoServiceImpl(new PedidoRepository()));
+                new EstoqueAbrigoServiceImpl(new EstoqueAbrigoRepository()));
+
+        PedidoSystemUtil pedidoSystemUtil = new PedidoSystemUtil(abrigoService,
+                new ItemServiceImpl(),
+                new PedidoServiceImpl(new PedidoRepository()));
+
+        CentroSystemUtil centroSystemUtil = new CentroSystemUtil(new CentroDistribuicaoServiceImpl(),
+                new PedidoServiceImpl(new PedidoRepository()),
+                new EstoqueCentroServiceImpl(new EstoqueCentroRepository()),
+                new EstoqueAbrigoServiceImpl(new EstoqueAbrigoRepository()));
+
+        DoacaoSystemUtil doacaoSystemUtil = new DoacaoSystemUtil();
+
+        ItemSystemUtil itemSystemUtil = new ItemSystemUtil(new ItemServiceImpl());
+
         int op = 0;
         while (op != 5) {
             op = menu(sc);

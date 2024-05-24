@@ -9,6 +9,7 @@ import org.example.entities.CentroDistribuicao;
 import org.example.entities.Doacao;
 import org.example.entities.Item;
 import org.example.exceptions.ResourceNotFoundException;
+import org.example.repositories.EstoqueAbrigoRepository;
 import org.example.repositories.EstoqueCentroRepository;
 import org.example.repositories.PedidoRepository;
 import org.example.services.*;
@@ -16,7 +17,10 @@ import org.example.services.*;
 public class DoacaoSystemUtil {
     private final DoacaoServiceImpl doacaoService = new DoacaoServiceImpl();
     private Scanner sc = new Scanner(System.in);
-    private final CentroSystemUtil centroUtil = new CentroSystemUtil(new CentroDistribuicaoServiceImpl(), new PedidoServiceImpl(new PedidoRepository()), new EstoqueCentroServiceImpl(new EstoqueCentroRepository()));
+    private final CentroSystemUtil centroUtil = new CentroSystemUtil(new CentroDistribuicaoServiceImpl(),
+                                                                     new PedidoServiceImpl(new PedidoRepository()),
+                                                                     new EstoqueCentroServiceImpl(new EstoqueCentroRepository()),
+                                                                     new EstoqueAbrigoServiceImpl(new EstoqueAbrigoRepository()));
     private final ItemSystemUtil itemUtil = new ItemSystemUtil(new ItemServiceImpl());
 
     public void saveDoacao() {

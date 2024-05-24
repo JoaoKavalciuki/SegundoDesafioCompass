@@ -2,7 +2,6 @@ package org.example.repositories;
 
 import jakarta.persistence.EntityManager;
 import jakarta.persistence.NoResultException;
-import org.example.entities.Abrigo;
 import org.example.entities.EstoqueCentro;
 import org.example.utils.JPAUtil;
 
@@ -25,28 +24,6 @@ public class EstoqueCentroRepository {
         }
     }
 
-    public EstoqueCentroRepository findByTipo(String tipo) {
-        return null;
-    }
-
-    public void verifica(Long cdid, Long itemid) {
-
-    }
-
-    public List<EstoqueCentroRepository> findAll() {
-        return null;
-    }
-
-    public void update(Abrigo abrigo) {
-    }
-
-
-    public void close() {
-        if (em.isOpen()) {
-            em.close();
-        }
-    }
-
     public Optional<EstoqueCentro> findByCDeItem(Long cdID, Long itemID) {
         try {
             EstoqueCentro estoqueCentro = em.createQuery(
@@ -64,7 +41,6 @@ public class EstoqueCentroRepository {
     public List<EstoqueCentro> findEstoquesByItemTipo(String tipo){
         List<EstoqueCentro> estoquesCentros = em.createQuery(
                 """
-
                     SELECT e FROM EstoqueCentro e LEFT JOIN e.item i WHERE i.itemTipo = :itemTipo
                 """,
         EstoqueCentro.class).setParameter("itemTipo", tipo).getResultList();
