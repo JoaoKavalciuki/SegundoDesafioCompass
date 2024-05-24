@@ -19,14 +19,18 @@ public class ItemServiceImpl implements ItemService {
 
     @Override
     public List<Item> findAll() {
-        System.out.println("LISTA DE ITENS:");
-        return itemRepository.findAll();
+        List<Item> itens = itemRepository.findAll();
+        if (!itens.isEmpty())
+            System.out.println("LISTA DE ITENS POR CATEGORIA:");
+        return itens;
     }
 
     @Override
     public List<Item> findByCategoria(String categoria) {
-        System.out.println("LISTA DE ITENS POR CATEGORIA:");
-        return itemRepository.findByCategoria(categoria);
+        List<Item> itens = itemRepository.findByCategoria(categoria);
+        if (!itens.isEmpty())
+            System.out.println("LISTA DE ITENS POR CATEGORIA:");
+        return itens;
     }
 
     @Override

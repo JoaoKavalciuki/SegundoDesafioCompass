@@ -70,7 +70,7 @@ public class DoacaoSystemUtil {
         } catch (ResourceNotFoundException e) {
             System.out.println("ERRO: " + e.getMessage());
         } catch (InputMismatchException e) {
-            System.out.println("ERRO: Entrada inválida. Digite apenas inteiros");
+            System.out.println("ERRO: Entrada inválida. Digite apenas números");
             sc.nextLine();
         }
     }
@@ -85,7 +85,7 @@ public class DoacaoSystemUtil {
         } catch (ResourceNotFoundException e) {
             System.out.println("ERRO: " + e.getMessage());
         } catch (InputMismatchException e) {
-            System.out.println("ERRO: Entrada inválida. Digite apenas inteiros");
+            System.out.println("ERRO: Entrada inválida. Digite apenas números");
             sc.nextLine();
         }
     }
