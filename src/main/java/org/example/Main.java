@@ -1,8 +1,10 @@
 package org.example;
 
+import java.util.List;
 import java.util.Scanner;
 
 import org.example.entities.Abrigo;
+import org.example.entities.Pedido;
 import org.example.repositories.AbrigoRepository;
 import org.example.repositories.PedidoRepository;
 import org.example.services.AbrigoServiceImpl;
@@ -27,7 +29,7 @@ public class Main {
         Scanner sc = new Scanner(System.in);
 
         DoacaoSystemUtil doacaoSystemUtil = new DoacaoSystemUtil();
-        CentroSystemUtil centroSystemUtil = new CentroSystemUtil(new CentroDistribuicaoServiceImpl());
+        CentroSystemUtil centroSystemUtil = new CentroSystemUtil(new CentroDistribuicaoServiceImpl(), new PedidoServiceImpl(new PedidoRepository()));
         ItemSystemUtil itemSystemUtil = new ItemSystemUtil(new ItemServiceImpl());
 
         EstoqueAbrigoService estoqueAbrigoService = new EstoqueAbrigoServiceImpl(em, sc);
@@ -40,11 +42,10 @@ public class Main {
             op = menu(sc);
             switch (op) {
                 case 1:
-                    centroSystemUtil.listCentros();
+                    centroMenu(sc, centroSystemUtil);
                     break;
                 case 2:
                     abrigoMenu(sc, abrigoSystemUtil, pedidoSystemUtil);
-
                     break;
                 case 3:
                     itemMenu(sc, itemSystemUtil);
@@ -66,7 +67,7 @@ public class Main {
 
     private static int menu(Scanner sc) {
         System.out.println("Menu:");
-        System.out.println("1. Listar Centros de Distribuição");
+        System.out.println("1. Gerenciar Centros de Distribuição");
         System.out.println("2. Gerenciar Abrigos");
         System.out.println("3. Gerenciar Itens");
         System.out.println("4. Gerenciar Doações");
@@ -76,6 +77,33 @@ public class Main {
         sc.nextLine();
         return op;
     }
+
+    private static void centroMenu(Scanner sc, CentroSystemUtil centroSystemUtil) {
+        int op = 0;
+        while (op != 3) {
+            System.out.println("Menu de Gerenciamento de Centros de Distribuição:");
+            System.out.println("1. Listar Centros de Distribuição");
+            System.out.println("2. Listar Pedidos Pendentes de um Centro");
+            System.out.println("3. Voltar ao Menu Principal");
+            System.out.print("Escolha uma opção: ");
+            op = sc.nextInt();
+            sc.nextLine();
+            switch (op) {
+                case 1:
+                    centroSystemUtil.listCentros();
+                    break;
+                case 2:
+                    centroSystemUtil.listarPedidosPendentes();
+                    break;
+                case 3:
+                    System.out.println("Voltando ao Menu Principal");
+                    break;
+                default:
+                    System.out.println("Opção inválida!");
+            }
+        }
+    }
+
 
     private static void doacaoMenu(Scanner sc, DoacaoSystemUtil doacaoSystemUtil) {
         int op = 0;
@@ -178,7 +206,7 @@ public class Main {
                         sc.nextLine();
                     }
 
-                    if(resposta == 'S'){
+                    if (resposta == 'S') {
                         pedidoSystemUtil.fazerDoacao();
                     }
 
