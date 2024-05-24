@@ -1,23 +1,16 @@
 package org.example;
 
-import java.util.List;
 import java.util.Scanner;
 
-import org.example.entities.Abrigo;
-import org.example.entities.Pedido;
-import org.example.repositories.AbrigoRepository;
+import org.example.repositories.EstoqueCentroRepository;
 import org.example.repositories.PedidoRepository;
-import org.example.services.AbrigoServiceImpl;
-import org.example.services.CentroDistribuicaoServiceImpl;
-import org.example.services.EstoqueAbrigoServiceImpl;
-import org.example.services.ItemServiceImpl;
+import org.example.services.*;
 import org.example.services.interfaces.EstoqueAbrigoService;
 import org.example.utils.AbrigoSystemUtil;
 import org.example.utils.CentroSystemUtil;
 import org.example.utils.DoacaoSystemUtil;
 import org.example.utils.ItemSystemUtil;
 import org.example.utils.JPAUtil;
-import org.example.services.PedidoServiceImpl;
 import org.example.utils.*;
 import jakarta.persistence.EntityManager;
 
@@ -29,9 +22,8 @@ public class Main {
         Scanner sc = new Scanner(System.in);
 
         DoacaoSystemUtil doacaoSystemUtil = new DoacaoSystemUtil();
-        CentroSystemUtil centroSystemUtil = new CentroSystemUtil(new CentroDistribuicaoServiceImpl(), new PedidoServiceImpl(new PedidoRepository()));
+        CentroSystemUtil centroSystemUtil = new CentroSystemUtil(new CentroDistribuicaoServiceImpl(), new PedidoServiceImpl(new PedidoRepository()), new EstoqueCentroServiceImpl(new EstoqueCentroRepository()));
         ItemSystemUtil itemSystemUtil = new ItemSystemUtil(new ItemServiceImpl());
-
         EstoqueAbrigoService estoqueAbrigoService = new EstoqueAbrigoServiceImpl(em, sc);
         AbrigoServiceImpl abrigoService = new AbrigoServiceImpl(em, sc, estoqueAbrigoService);
         AbrigoSystemUtil abrigoSystemUtil = new AbrigoSystemUtil(new AbrigoServiceImpl(em, sc, estoqueAbrigoService),

@@ -70,4 +70,15 @@ public class EstoqueCentroRepository {
         EstoqueCentro.class).setParameter("itemTipo", tipo).getResultList();
         return estoquesCentros;
     }
+
+    public void updateEstoque(Long centroId, Long itemId, int quantidade) {
+        em.getTransaction().begin();
+        em.createQuery("UPDATE EstoqueCentro e SET e.quantidade = e.quantidade - :quantidade " +
+                        "WHERE e.centroDistribuicao.id = :centroId AND e.item.id = :itemId")
+                .setParameter("quantidade", quantidade)
+                .setParameter("centroId", centroId)
+                .setParameter("itemId", itemId)
+                .executeUpdate();
+        em.getTransaction().commit();
+    }
 }
