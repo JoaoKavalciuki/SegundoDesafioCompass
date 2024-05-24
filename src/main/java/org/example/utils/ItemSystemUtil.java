@@ -48,7 +48,7 @@ public class ItemSystemUtil {
             } catch (ResourceNotFoundException e) {
                 System.out.println("ERRO: " + e.getMessage());
             } catch (InputMismatchException e) {
-                System.out.println("ERRO: Entrada inválida. Digite apenas inteiros");
+                System.out.println("ERRO: Entrada inválida. Digite apenas números");
                 sc.nextLine();
             }
         }
@@ -64,7 +64,7 @@ public class ItemSystemUtil {
         } catch (ResourceNotFoundException e) {
             System.out.println("ERRO: " + e.getMessage());
         } catch (InputMismatchException e) {
-            System.out.println("ERRO: Entrada inválida. Digite apenas inteiros");
+            System.out.println("ERRO: Entrada inválida. Digite apenas números");
             sc.nextLine();
         }
         return null;
@@ -103,7 +103,7 @@ public class ItemSystemUtil {
         } catch (ResourceNotFoundException e) {
             System.out.println("ERRO: " + e.getMessage());
         } catch (InputMismatchException e) {
-            System.out.println("ERRO: Entrada inválida. Digite apenas inteiros");
+            System.out.println("ERRO: Entrada inválida. Digite apenas o que se pede");
             sc.nextLine();
         }
     }
@@ -136,7 +136,7 @@ public class ItemSystemUtil {
         } catch (ResourceNotFoundException e) {
             System.out.println("ERRO: " + e.getMessage());
         } catch (InputMismatchException e) {
-            System.out.println("ERRO: Entrada inválida. Digite apenas inteiros");
+            System.out.println("ERRO: Entrada inválida. Digite apenas números");
             sc.nextLine();
         }
     }
