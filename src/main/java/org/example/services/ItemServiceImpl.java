@@ -1,13 +1,13 @@
 package org.example.services;
 
+import java.util.List;
+
 import org.example.entities.Item;
 import org.example.exceptions.DuplicateEntryException;
 import org.example.exceptions.IllegalEntryException;
 import org.example.exceptions.ResourceNotFoundException;
 import org.example.repositories.ItemRepository;
 import org.example.services.interfaces.ItemService;
-
-import java.util.List;
 
 public class ItemServiceImpl implements ItemService {
 
@@ -19,14 +19,18 @@ public class ItemServiceImpl implements ItemService {
 
     @Override
     public List<Item> findAll() {
-        System.out.println("LISTA DE ITENS:");
-        return itemRepository.findAll();
+        List<Item> itens = itemRepository.findAll();
+        if (!itens.isEmpty())
+            System.out.println("LISTA DE ITENS POR CATEGORIA:");
+        return itens;
     }
 
     @Override
     public List<Item> findByCategoria(String categoria) {
-        System.out.println("LISTA DE ITENS POR CATEGORIA:");
-        return itemRepository.findByCategoria(categoria);
+        List<Item> itens = itemRepository.findByCategoria(categoria);
+        if (!itens.isEmpty())
+            System.out.println("LISTA DE ITENS POR CATEGORIA:");
+        return itens;
     }
 
     @Override
@@ -49,8 +53,9 @@ public class ItemServiceImpl implements ItemService {
             }
             itemRepository.save(item);
             System.out.println("ITEM INSERIDO");
-        } catch (DuplicateEntryException e) {
+        } catch (DuplicateEntryException | IllegalEntryException e) {
             System.out.println("ERRO: " + e.getMessage());
+            return;
         }
     }
 
@@ -69,6 +74,7 @@ public class ItemServiceImpl implements ItemService {
             System.out.println("ITEM ATUALIZADO");
         } catch (IllegalEntryException | ResourceNotFoundException e) {
             System.out.println("ERRO: " + e.getMessage());
+            return;
         }
     }
 
@@ -89,6 +95,7 @@ public class ItemServiceImpl implements ItemService {
             System.out.println("ITEM DELETADO");
         } catch (IllegalEntryException | ResourceNotFoundException e) {
             System.out.println("ERRO: " + e.getMessage());
+            return;
         }
     }
 }

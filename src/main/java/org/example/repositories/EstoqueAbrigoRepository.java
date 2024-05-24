@@ -1,8 +1,8 @@
 package org.example.repositories;
 
-import jakarta.persistence.EntityManager;
 import org.example.entities.EstoqueAbrigo;
 
+import jakarta.persistence.EntityManager;
 import java.util.List;
 
 public class EstoqueAbrigoRepository {

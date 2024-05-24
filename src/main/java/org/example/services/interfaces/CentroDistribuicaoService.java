@@ -1,8 +1,8 @@
 package org.example.services.interfaces;
 
-import org.example.entities.CentroDistribuicao;
-
 import java.util.List;
+
+import org.example.entities.CentroDistribuicao;
 
 public interface CentroDistribuicaoService {
 

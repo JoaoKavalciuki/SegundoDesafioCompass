@@ -1,10 +1,10 @@
 package org.example.utils;
 
-import org.example.entities.CentroDistribuicao;
-import org.example.services.interfaces.CentroDistribuicaoService;
-
 import java.util.List;
 import java.util.Scanner;
+
+import org.example.entities.CentroDistribuicao;
+import org.example.services.interfaces.CentroDistribuicaoService;
 
 public class CentroSystemUtil {
     private CentroDistribuicaoService centroService;

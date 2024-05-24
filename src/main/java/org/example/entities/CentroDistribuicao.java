@@ -1,12 +1,10 @@
 package org.example.entities;
 
 import java.io.Serializable;
+import java.util.ArrayList;
+import java.util.List;
 
-import jakarta.persistence.Entity;
-import jakarta.persistence.GeneratedValue;
-import jakarta.persistence.GenerationType;
-import jakarta.persistence.Id;
-import jakarta.persistence.Table;
+import jakarta.persistence.*;
 
 @Entity
 @Table(name = "centros_distribuicao")
@@ -24,11 +22,14 @@ public class CentroDistribuicao implements Serializable {
     private String estado;
     private String cep;
 
+    @ManyToMany(mappedBy = "centrosDeDistribuicao")
+    private List<Pedido> pedidos = new ArrayList<>();
+
     public CentroDistribuicao() {
     }
 
     public CentroDistribuicao(Long id, String nome, String logradouro, String numero, String bairro, String cidade,
-                              String estado, String cep) {
+            String estado, String cep) {
         this.id = id;
         this.nome = nome;
         this.logradouro = logradouro;
@@ -101,6 +102,11 @@ public class CentroDistribuicao implements Serializable {
 
     public void setCep(String cep) {
         this.cep = cep;
+    }
+
+
+    public List<Pedido> getPedidos() {
+        return pedidos;
     }
 
     @Override

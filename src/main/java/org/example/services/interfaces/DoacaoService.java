@@ -1,8 +1,8 @@
 package org.example.services.interfaces;
 
-import org.example.entities.Doacao;
-
 import java.util.List;
+
+import org.example.entities.Doacao;
 
 public interface DoacaoService {
     void save(Doacao doacao);

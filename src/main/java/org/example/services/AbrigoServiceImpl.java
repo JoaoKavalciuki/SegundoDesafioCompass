@@ -26,6 +26,7 @@ public class AbrigoServiceImpl implements AbrigoService {
         this.estoqueAbrigoService = estoqueAbrigoService;
     }
 
+
     public void createAbrigo(Abrigo abrigo) {
         try {
             System.out.print("Nome: ");
@@ -139,4 +140,5 @@ public class AbrigoServiceImpl implements AbrigoService {
             throw new ValidationException("Dados do abrigo são inválidos!");
         }
     }
+
 }

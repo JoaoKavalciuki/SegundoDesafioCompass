@@ -32,13 +32,13 @@ public class DoacaoRepository {
         return total != null ? total.intValue() : 0;
     }
 
-    public List<Doacao> listAll() {
+    public List<Doacao> findAll() {
         String query = "SELECT d FROM Doacao d JOIN d.item i JOIN d.centroDistribuicao c";
         return em.createQuery(query, Doacao.class)
                 .getResultList();
     }
 
-    public List<Doacao> listByCategoria(String categoria) {
+    public List<Doacao> findByCategoria(String categoria) {
         String query = "SELECT d FROM Doacao d " +
                 "JOIN d.item i JOIN d.centroDistribuicao c " +
                 "WHERE i.categoria = :categoria";

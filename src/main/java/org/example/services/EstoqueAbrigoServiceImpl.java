@@ -1,11 +1,11 @@
 package org.example.services;
 
-import jakarta.persistence.EntityManager;
 import org.example.entities.EstoqueAbrigo;
 import org.example.exceptions.ResourceNotFoundException;
 import org.example.repositories.EstoqueAbrigoRepository;
 import org.example.services.interfaces.EstoqueAbrigoService;
 
+import jakarta.persistence.EntityManager;
 import java.util.List;
 import java.util.Scanner;
 

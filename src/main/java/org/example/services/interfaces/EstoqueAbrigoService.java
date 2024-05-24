@@ -1,7 +1,6 @@
 package org.example.services.interfaces;
 
 import org.example.entities.EstoqueAbrigo;
-
 import java.util.List;
 
 public interface EstoqueAbrigoService {

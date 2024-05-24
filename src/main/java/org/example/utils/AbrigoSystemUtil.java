@@ -1,7 +1,9 @@
 package org.example.utils;
 
+import org.example.entities.Abrigo;
 import org.example.services.AbrigoServiceImpl;
 import org.example.services.EstoqueAbrigoServiceImpl;
+import org.example.services.interfaces.EstoqueAbrigoService;
 
 import java.util.Scanner;
 
@@ -16,13 +18,12 @@ public class AbrigoSystemUtil {
     }
 
     public void create(){
-        abrigoService.listarAbrigos();
+        abrigoService.createAbrigo(new Abrigo());
     }
 
     public void listAbrigos(){
         abrigoService.listarAbrigos();
     }
-
     public void update (){
         System.out.print("ID do Abrigo a ser atualizado: ");
         Long id = sc.nextLong();
@@ -40,7 +41,7 @@ public class AbrigoSystemUtil {
     public void listAbrigoEstoque(){
         System.out.print("ID do Abrigo: ");
         Long id = sc.nextLong();
-        sc.nextLine();
+        sc  .nextLine();
         estoqueAbrigoService.listarEstoquePorAbrigo(id);
     }
 }
