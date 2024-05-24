@@ -10,6 +10,7 @@ import org.example.entities.Pedido;
 import org.example.entities.enums.StatusPedido;
 import org.example.repositories.EstoqueCentroRepository;
 import org.example.services.interfaces.CentroDistribuicaoService;
+import org.example.services.interfaces.EstoqueAbrigoService;
 import org.example.services.interfaces.EstoqueCentroService;
 import org.example.services.interfaces.PedidoService;
 
@@ -17,12 +18,14 @@ public class CentroSystemUtil {
     private CentroDistribuicaoService centroService;
     private PedidoService pedidoService;
     private EstoqueCentroService estoqueCentroService;
+    private EstoqueAbrigoService estoqueAbrigoService;
     private Scanner sc = new Scanner(System.in);
 
-    public CentroSystemUtil(CentroDistribuicaoService centroService, PedidoService pedidoService, EstoqueCentroService estoqueCentroService) {
+    public CentroSystemUtil(CentroDistribuicaoService centroService, PedidoService pedidoService, EstoqueCentroService estoqueCentroService, EstoqueAbrigoService estoqueAbrigoService) {
         this.centroService = centroService;
         this.pedidoService = pedidoService;
         this.estoqueCentroService = estoqueCentroService;
+        this.estoqueAbrigoService = estoqueAbrigoService;
     }
 
     public void listCentros() {
@@ -70,6 +73,7 @@ public class CentroSystemUtil {
             case "A":
                 pedidoSelecionado.setStatusPedido(StatusPedido.ACEITO);
                 estoqueCentroService.reduzirEstoque(centro.getId(), pedidoSelecionado.getItem().getId(), pedidoSelecionado.getQuantidade());
+                estoqueAbrigoService.updateEstoque(pedidoSelecionado.getAbrigo().getId(), pedidoSelecionado.getItem().getId(), pedidoSelecionado.getQuantidade());
                 System.out.println("Pedido aceito com sucesso");
                 pedidoService.savePedido(pedidoSelecionado);
                 break;
