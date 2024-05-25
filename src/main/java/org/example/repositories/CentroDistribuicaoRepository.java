@@ -27,4 +27,5 @@ public class CentroDistribuicaoRepository {
     public CentroDistribuicao findById(Long id) {
         return em.find(CentroDistribuicao.class, id);
     }
+
 }

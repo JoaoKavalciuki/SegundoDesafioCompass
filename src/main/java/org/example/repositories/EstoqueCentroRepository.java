@@ -1,8 +1,10 @@
 package org.example.repositories;
 
 import jakarta.persistence.EntityManager;
+import jakarta.persistence.EntityTransaction;
 import jakarta.persistence.NoResultException;
 import org.example.entities.EstoqueCentro;
+import org.example.exceptions.ResourceNotFoundException;
 import org.example.utils.JPAUtil;
 
 import java.util.List;
@@ -10,11 +12,11 @@ import java.util.Optional;
 
 public class EstoqueCentroRepository {
 
-    private EntityManager em;
+	private EntityManager em;
 
-    public EstoqueCentroRepository() {
-        em = JPAUtil.getEntityManager();
-    }
+	public EstoqueCentroRepository() {
+		em = JPAUtil.getEntityManager();
+	}
 
     public void save(EstoqueCentro estoqueCentro) {
         if (estoqueCentro.getId() == null) {
@@ -41,7 +43,9 @@ public class EstoqueCentroRepository {
     public List<EstoqueCentro> findEstoquesByItemTipo(String tipo){
         List<EstoqueCentro> estoquesCentros = em.createQuery(
                 """
-                    SELECT e FROM EstoqueCentro e LEFT JOIN e.item i WHERE i.itemTipo = :itemTipo
+                    SELECT e FROM EstoqueCentro e LEFT JOIN e.item i
+                    WHERE i.itemTipo = :itemTipo
+                    ORDER BY e.quantidade DESC
                 """,
         EstoqueCentro.class).setParameter("itemTipo", tipo).getResultList();
         return estoquesCentros;
@@ -52,6 +56,16 @@ public class EstoqueCentroRepository {
         em.createQuery("UPDATE EstoqueCentro e SET e.quantidade = e.quantidade - :quantidade " +
                         "WHERE e.centroDistribuicao.id = :centroId AND e.item.id = :itemId")
                 .setParameter("quantidade", quantidade)
+                .setParameter("centroId", centroId)
+                .setParameter("itemId", itemId)
+                .executeUpdate();
+        em.getTransaction().commit();
+    }
+    
+    public void deleteEstoque(Long centroId, Long itemId) {
+        em.getTransaction().begin();
+        em.createQuery("DELETE FROM EstoqueCentro e " +
+                        "WHERE e.centroDistribuicao.id = :centroId AND e.item.id = :itemId")
                 .setParameter("centroId", centroId)
                 .setParameter("itemId", itemId)
                 .executeUpdate();

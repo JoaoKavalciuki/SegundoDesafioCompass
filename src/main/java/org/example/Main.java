@@ -29,9 +29,9 @@ public class Main {
         AbrigoSystemUtil abrigoSystemUtil = new AbrigoSystemUtil(new AbrigoServiceImpl(em, sc, estoqueAbrigoService),
                 new EstoqueAbrigoServiceImpl(new EstoqueAbrigoRepository()));
 
-        PedidoSystemUtil pedidoSystemUtil = new PedidoSystemUtil(abrigoService,
-                new ItemServiceImpl(),
-                new PedidoServiceImpl(new PedidoRepository()));
+        PedidoSystemUtil pedidoSystemUtil = new PedidoSystemUtil(abrigoService, new ItemServiceImpl(),
+                new PedidoServiceImpl(new PedidoRepository()), new CentroDistribuicaoServiceImpl(),
+                new EstoqueCentroServiceImpl(new EstoqueCentroRepository()));
 
         CentroSystemUtil centroSystemUtil = new CentroSystemUtil(new CentroDistribuicaoServiceImpl(),
                 new PedidoServiceImpl(new PedidoRepository()),
@@ -59,6 +59,9 @@ public class Main {
                     doacaoMenu(sc, doacaoSystemUtil);
                     break;
                 case 5:
+                	transferenciaMenu(sc, new TransferenciaSystemUtil(new TransferenciaServiceImpl(em)));
+                    break;
+                case 6:
                     System.out.println("Saindo do programa");
                     break;
                 default:
@@ -76,7 +79,8 @@ public class Main {
         System.out.println("2. Gerenciar Abrigos");
         System.out.println("3. Gerenciar Itens");
         System.out.println("4. Gerenciar Doações");
-        System.out.println("5. Sair");
+        System.out.println("5. Transferências");
+        System.out.println("6. Sair");
         System.out.print("Escolha uma opção: ");
         int op = sc.nextInt();
         sc.nextLine();
@@ -224,6 +228,27 @@ public class Main {
                     break;
                 case 5:
                     abrigoSystemUtil.listAbrigoEstoque();
+                    break;
+                case 6:
+                    System.out.println("Voltando ao Menu Principal");
+                    break;
+                default:
+                    System.out.println("Opção inválida!");
+            }
+        }
+    }
+    private static void transferenciaMenu(Scanner sc, TransferenciaSystemUtil transferenciaSystemUtil) {
+        int op = 0;
+        while (op != 5) {
+            System.out.println("Menu de Transferencia:");
+            System.out.println("1. Transferir entre centros");
+            System.out.println("6. Voltar ao Menu Principal");
+            System.out.print("Escolha uma opção: ");
+            op = sc.nextInt();
+            sc.nextLine();
+            switch (op) {
+                case 1:
+                	transferenciaSystemUtil.transferir(sc);
                     break;
                 case 6:
                     System.out.println("Voltando ao Menu Principal");
