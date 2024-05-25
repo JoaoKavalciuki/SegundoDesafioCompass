@@ -2,21 +2,22 @@ package org.example;
 
 import java.util.Scanner;
 
-import org.example.entities.Abrigo;
-import org.example.repositories.AbrigoRepository;
 import org.example.repositories.PedidoRepository;
 import org.example.services.AbrigoServiceImpl;
 import org.example.services.CentroDistribuicaoServiceImpl;
 import org.example.services.EstoqueAbrigoServiceImpl;
 import org.example.services.ItemServiceImpl;
+import org.example.services.PedidoServiceImpl;
+import org.example.services.TransferenciaServiceImpl;
 import org.example.services.interfaces.EstoqueAbrigoService;
 import org.example.utils.AbrigoSystemUtil;
 import org.example.utils.CentroSystemUtil;
 import org.example.utils.DoacaoSystemUtil;
 import org.example.utils.ItemSystemUtil;
 import org.example.utils.JPAUtil;
-import org.example.services.PedidoServiceImpl;
-import org.example.utils.*;
+import org.example.utils.PedidoSystemUtil;
+import org.example.utils.TransferenciaSystemUtil;
+
 import jakarta.persistence.EntityManager;
 
 public class Main {
@@ -53,6 +54,9 @@ public class Main {
                     doacaoMenu(sc, doacaoSystemUtil);
                     break;
                 case 5:
+                	transferenciaMenu(sc, new TransferenciaSystemUtil(new TransferenciaServiceImpl(em)));
+                    break;
+                case 6:
                     System.out.println("Saindo do programa");
                     break;
                 default:
@@ -70,7 +74,8 @@ public class Main {
         System.out.println("2. Gerenciar Abrigos");
         System.out.println("3. Gerenciar Itens");
         System.out.println("4. Gerenciar Doações");
-        System.out.println("5. Sair");
+        System.out.println("5. Transferências");
+        System.out.println("6. Sair");
         System.out.print("Escolha uma opção: ");
         int op = sc.nextInt();
         sc.nextLine();
@@ -191,6 +196,27 @@ public class Main {
                     break;
                 case 5:
                     abrigoSystemUtil.listAbrigoEstoque();
+                    break;
+                case 6:
+                    System.out.println("Voltando ao Menu Principal");
+                    break;
+                default:
+                    System.out.println("Opção inválida!");
+            }
+        }
+    }
+    private static void transferenciaMenu(Scanner sc, TransferenciaSystemUtil transferenciaSystemUtil) {
+        int op = 0;
+        while (op != 5) {
+            System.out.println("Menu de Transferencia:");
+            System.out.println("1. Transferir entre centros");
+            System.out.println("6. Voltar ao Menu Principal");
+            System.out.print("Escolha uma opção: ");
+            op = sc.nextInt();
+            sc.nextLine();
+            switch (op) {
+                case 1:
+                	transferenciaSystemUtil.transferir(sc);
                     break;
                 case 6:
                     System.out.println("Voltando ao Menu Principal");
