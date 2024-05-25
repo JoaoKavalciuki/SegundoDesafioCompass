@@ -185,7 +185,7 @@ public class Main {
 
     private static void abrigoMenu(Scanner sc, AbrigoSystemUtil abrigoSystemUtil, PedidoSystemUtil pedidoSystemUtil) {
         int op = 0;
-        while (op != 5) {
+        while (op != 6) {
             System.out.println("Menu de Abrigos:");
             System.out.println("1. Cadastrar Abrigo");
             System.out.println("2. Listar Abrigos");
