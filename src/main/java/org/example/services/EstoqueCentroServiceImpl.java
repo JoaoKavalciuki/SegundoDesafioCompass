@@ -1,8 +1,6 @@
 package org.example.services;
 
-import org.example.entities.CentroDistribuicao;
 import org.example.entities.EstoqueCentro;
-import org.example.entities.Pedido;
 import org.example.repositories.EstoqueCentroRepository;
 import org.example.services.interfaces.EstoqueCentroService;
 
@@ -19,22 +17,47 @@ public class EstoqueCentroServiceImpl implements EstoqueCentroService {
 
     @Override
     public void save(EstoqueCentro estoqueCentro) {
-
+        if (estoqueCentro == null) {
+            throw new IllegalArgumentException("EstoqueCentro não pode ser nulo.");
+        }
+        estoqueCentroRepository.save(estoqueCentro);
     }
 
     @Override
     public Optional<EstoqueCentro> findByCDeItem(Long cdID, Long itemID) {
-        return Optional.empty();
+        if (cdID == null || itemID == null) {
+            throw new IllegalArgumentException("IDs do centro de distribuição e do item não podem ser nulos.");
+        }
+        return estoqueCentroRepository.findByCDeItem(cdID, itemID);
     }
 
     @Override
     public List<EstoqueCentro> findEstoquesByItemTipo(String tipo) {
-        return List.of();
+        if (tipo == null || tipo.isEmpty()) {
+            throw new IllegalArgumentException("O tipo do item não pode ser nulo ou vazio.");
+        }
+        return estoqueCentroRepository.findEstoquesByItemTipo(tipo);
     }
 
     @Override
     public void reduzirEstoque(Long centroId, Long itemId, int quantidade) {
-        estoqueCentroRepository.updateEstoque(centroId, itemId, quantidade);
-    }
+        if (centroId == null || itemId == null) {
+            throw new IllegalArgumentException("IDs do centro de distribuição e do item não podem ser nulos.");
+        }
+        if (quantidade <= 0) {
+            throw new IllegalArgumentException("A quantidade deve ser maior que zero.");
+        }
 
+        Optional<EstoqueCentro> estoqueOpt = estoqueCentroRepository.findByCDeItem(centroId, itemId);
+        if (estoqueOpt.isPresent()) {
+            EstoqueCentro estoqueCentro = estoqueOpt.get();
+            if (estoqueCentro.getQuantidade() < quantidade) {
+                throw new IllegalStateException("Quantidade insuficiente no estoque.");
+            }
+            estoqueCentro.setQuantidade(estoqueCentro.getQuantidade() - quantidade);
+            estoqueCentroRepository.save(estoqueCentro);
+        } else {
+            throw new IllegalStateException("Estoque não encontrado para o item e centro especificados.");
+        }
+    }
 }

@@ -61,11 +61,24 @@ public class EstoqueAbrigoServiceImpl implements EstoqueAbrigoService {
 
     @Override
     public Optional<EstoqueAbrigo> findEstoqueByItemTipo(Long abrigoId, String tipo) {
-        return estoqueAbrigoRepository.findEstoqueByItemTipo(abrigoId, tipo);
+        if (abrigoId == null) {
+            throw new IllegalArgumentException("ID do abrigo não pode ser nulo.");
+        }
+        if (tipo == null || tipo.isEmpty()) {
+            throw new IllegalArgumentException("O tipo do item não pode ser nulo ou vazio.");
+        }
+        Optional<EstoqueAbrigo> resultado = estoqueAbrigoRepository.findEstoqueByItemTipo(abrigoId, tipo);
+        return resultado;
     }
 
     @Override
     public void updateEstoque(Long abrigoId, Long itemId, int quantidade) {
+        if (abrigoId == null || itemId == null) {
+            throw new IllegalArgumentException("IDs do abrigo e do item não podem ser nulos.");
+        }
+        if (quantidade < 0) {
+            throw new IllegalArgumentException("A quantidade não pode ser negativa.");
+        }
         estoqueAbrigoRepository.updateEstoque(abrigoId, itemId, quantidade);
     }
 }
