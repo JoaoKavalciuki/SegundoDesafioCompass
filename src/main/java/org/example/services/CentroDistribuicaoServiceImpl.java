@@ -30,4 +30,5 @@ public class CentroDistribuicaoServiceImpl implements CentroDistribuicaoService 
         }
         return centro;
     }
+
 }

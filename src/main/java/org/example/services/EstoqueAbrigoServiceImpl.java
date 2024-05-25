@@ -5,20 +5,15 @@ import org.example.exceptions.ResourceNotFoundException;
 import org.example.repositories.EstoqueAbrigoRepository;
 import org.example.services.interfaces.EstoqueAbrigoService;
 
-import jakarta.persistence.EntityManager;
 import java.util.List;
-import java.util.Scanner;
+import java.util.Optional;
 
 public class EstoqueAbrigoServiceImpl implements EstoqueAbrigoService {
 
-    private EntityManager em;
     private EstoqueAbrigoRepository estoqueAbrigoRepository;
-    private Scanner scanner;
 
-    public EstoqueAbrigoServiceImpl(EntityManager em, Scanner scanner) {
-        this.em = em;
-        this.estoqueAbrigoRepository = new EstoqueAbrigoRepository(em);
-        this.scanner = scanner;
+    public EstoqueAbrigoServiceImpl(EstoqueAbrigoRepository estoqueAbrigoRepository) {
+        this.estoqueAbrigoRepository = estoqueAbrigoRepository;
     }
 
     @Override
@@ -62,5 +57,28 @@ public class EstoqueAbrigoServiceImpl implements EstoqueAbrigoService {
             }
         }
         return estoques;
+    }
+
+    @Override
+    public Optional<EstoqueAbrigo> findEstoqueByItemTipo(Long abrigoId, String tipo) {
+        if (abrigoId == null) {
+            throw new IllegalArgumentException("ID do abrigo não pode ser nulo.");
+        }
+        if (tipo == null || tipo.isEmpty()) {
+            throw new IllegalArgumentException("O tipo do item não pode ser nulo ou vazio.");
+        }
+        Optional<EstoqueAbrigo> resultado = estoqueAbrigoRepository.findEstoqueByItemTipo(abrigoId, tipo);
+        return resultado;
+    }
+
+    @Override
+    public void updateEstoque(Long abrigoId, Long itemId, int quantidade) {
+        if (abrigoId == null || itemId == null) {
+            throw new IllegalArgumentException("IDs do abrigo e do item não podem ser nulos.");
+        }
+        if (quantidade < 0) {
+            throw new IllegalArgumentException("A quantidade não pode ser negativa.");
+        }
+        estoqueAbrigoRepository.updateEstoque(abrigoId, itemId, quantidade);
     }
 }
