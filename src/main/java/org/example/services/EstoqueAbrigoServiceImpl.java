@@ -5,20 +5,15 @@ import org.example.exceptions.ResourceNotFoundException;
 import org.example.repositories.EstoqueAbrigoRepository;
 import org.example.services.interfaces.EstoqueAbrigoService;
 
-import jakarta.persistence.EntityManager;
 import java.util.List;
-import java.util.Scanner;
+import java.util.Optional;
 
 public class EstoqueAbrigoServiceImpl implements EstoqueAbrigoService {
 
-    private EntityManager em;
     private EstoqueAbrigoRepository estoqueAbrigoRepository;
-    private Scanner scanner;
 
-    public EstoqueAbrigoServiceImpl(EntityManager em, Scanner scanner) {
-        this.em = em;
-        this.estoqueAbrigoRepository = new EstoqueAbrigoRepository(em);
-        this.scanner = scanner;
+    public EstoqueAbrigoServiceImpl(EstoqueAbrigoRepository estoqueAbrigoRepository) {
+        this.estoqueAbrigoRepository = estoqueAbrigoRepository;
     }
 
     @Override
@@ -62,5 +57,15 @@ public class EstoqueAbrigoServiceImpl implements EstoqueAbrigoService {
             }
         }
         return estoques;
+    }
+
+    @Override
+    public Optional<EstoqueAbrigo> findEstoqueByItemTipo(Long abrigoId, String tipo) {
+        return estoqueAbrigoRepository.findEstoqueByItemTipo(abrigoId, tipo);
+    }
+
+    @Override
+    public void updateEstoque(Long abrigoId, Long itemId, int quantidade) {
+        estoqueAbrigoRepository.updateEstoque(abrigoId, itemId, quantidade);
     }
 }

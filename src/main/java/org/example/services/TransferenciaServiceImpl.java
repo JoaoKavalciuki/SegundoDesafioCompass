@@ -40,31 +40,33 @@ public class TransferenciaServiceImpl implements TransferenciaService {
 		System.out.println("Buscando estoque de destino...");
 		Optional<EstoqueCentro> estoqueDestino = estoqueRepository.findByCDeItem(destino.getId(), item.getId());
 		if (estoqueDestino.isPresent()) {
-	        System.out.println("Estoque de estoqueDestino encontrado com quantidade: " + estoqueOrigem.get().getQuantidade());
+	        System.out.println("Estoque de Destino encontrado com quantidade: " + estoqueOrigem.get().getQuantidade());
 	    } else {
 	        System.out.println("Estoque de destino não encontrado.");
 	    }
 		estoqueDestino.ifPresentOrElse(existenteEstoque -> {
-			  System.out.println("estoque existente");
 			int quantidade = existenteEstoque.getQuantidade();
 			if (quantidade + transferencia.getQuantidade() > 1000) {
 				System.out.println("Operação invalidada: A quantidade ultrapassa o limite do centro");
 			} else {
 				estoqueOrigem.ifPresentOrElse(estoqueOriginal -> {
 					int quantidadeOrigem = estoqueOriginal.getQuantidade();
-
-					if (quantidadeOrigem > transferencia.getQuantidade()) {
-						estoqueOriginal.setQuantidade(quantidadeOrigem - transferencia.getQuantidade());
-						estoqueRepository.update(estoqueOriginal);
-						
+					if (quantidadeOrigem >= transferencia.getQuantidade()) {
+						if (quantidadeOrigem != transferencia.getQuantidade())
+							estoqueRepository.updateEstoque(estoqueOriginal.getCentroDistribuicao().getId(), 
+								estoqueOriginal.getItem().getId(), transferencia.getQuantidade());
+						else
+							estoqueRepository.deleteEstoque(estoqueOriginal.getCentroDistribuicao().getId(), 
+								estoqueOriginal.getItem().getId());
+							
 						existenteEstoque
 								.setQuantidade(existenteEstoque.getQuantidade() + transferencia.getQuantidade());
-						estoqueRepository.update(existenteEstoque);
+						estoqueRepository.save(existenteEstoque);
 						
 						transferenciaRepository.save(transferencia);
 					} else {
-						 System.out.println("Quantidade atual na origem: " + quantidadeOrigem);
-					        System.out.println("Quantidade a ser transferida: " + transferencia.getQuantidade());
+						System.out.println("Quantidade atual na origem: " + quantidadeOrigem);
+					    System.out.println("Quantidade a ser transferida: " + transferencia.getQuantidade());
 						System.out.println("Operação invalidada: Quantidade insuficiente no centro de origem");
 					}
 				}, () -> {
@@ -75,19 +77,25 @@ public class TransferenciaServiceImpl implements TransferenciaService {
 			estoqueOrigem.ifPresentOrElse(estoqueOriginal -> {
 				int quantidadeOrigem = estoqueOriginal.getQuantidade();
 				if (quantidadeOrigem >= transferencia.getQuantidade()) {
-					estoqueOriginal.setQuantidade(quantidadeOrigem - transferencia.getQuantidade());
-					estoqueRepository.update(estoqueOriginal);
+					if (quantidadeOrigem != transferencia.getQuantidade())
+						estoqueRepository.updateEstoque(estoqueOriginal.getCentroDistribuicao().getId(), 
+							estoqueOriginal.getItem().getId(), transferencia.getQuantidade());
+					else
+						estoqueRepository.deleteEstoque(estoqueOriginal.getCentroDistribuicao().getId(), 
+							estoqueOriginal.getItem().getId());
+					
 					System.out.println("Criando novo estoque");
 					EstoqueCentro novoEstoque = new EstoqueCentro();
 					novoEstoque.setCentroDistribuicao(destino);
 					novoEstoque.setItem(transferencia.getItem());
 					novoEstoque.setQuantidade(transferencia.getQuantidade());
 					estoqueRepository.save(novoEstoque);
-					System.out.println("novo estoque criado: "+novoEstoque.toString());
+					System.out.println("Novo estoque criado com sucesso!");
+					
 					transferenciaRepository.save(transferencia);
 				} else {
-					 System.out.println("Quantidade atual na origem: " + quantidadeOrigem);
-				        System.out.println("Quantidade a ser transferida: " + transferencia.getQuantidade());
+					System.out.println("Quantidade atual na origem: " + quantidadeOrigem);
+				    System.out.println("Quantidade a ser transferida: " + transferencia.getQuantidade());
 					System.out.println("Operação invalidada: Quantidade insuficiente no centro de origem");
 				}
 			}, () -> {
