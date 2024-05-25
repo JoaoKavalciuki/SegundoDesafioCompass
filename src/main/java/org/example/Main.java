@@ -29,9 +29,9 @@ public class Main {
         AbrigoSystemUtil abrigoSystemUtil = new AbrigoSystemUtil(new AbrigoServiceImpl(em, sc, estoqueAbrigoService),
                 new EstoqueAbrigoServiceImpl(new EstoqueAbrigoRepository()));
 
-        PedidoSystemUtil pedidoSystemUtil = new PedidoSystemUtil(abrigoService,
-                new ItemServiceImpl(),
-                new PedidoServiceImpl(new PedidoRepository()));
+        PedidoSystemUtil pedidoSystemUtil = new PedidoSystemUtil(abrigoService, new ItemServiceImpl(),
+                new PedidoServiceImpl(new PedidoRepository()), new CentroDistribuicaoServiceImpl(),
+                new EstoqueCentroServiceImpl(new EstoqueCentroRepository()));
 
         CentroSystemUtil centroSystemUtil = new CentroSystemUtil(new CentroDistribuicaoServiceImpl(),
                 new PedidoServiceImpl(new PedidoRepository()),

@@ -29,7 +29,7 @@ public class EstoqueCentroServiceImpl implements EstoqueCentroService {
 
     @Override
     public List<EstoqueCentro> findEstoquesByItemTipo(String tipo) {
-        return List.of();
+        return estoqueCentroRepository.findEstoquesByItemTipo(tipo);
     }
 
     @Override
