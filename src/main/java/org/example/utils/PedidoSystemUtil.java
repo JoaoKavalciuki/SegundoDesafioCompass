@@ -30,36 +30,52 @@ public class PedidoSystemUtil {
         this.estoqueCentroService = estoqueCentroService;
     }
 
-    public void fazerDoacao(){
-        System.out.print("Informe o ID do abrigo que será feita o pedido: ");
-        Long id = sc.nextLong();
-        sc.nextLine();
+    private List<String> mostrarCategoriasMenu(){
+        List<String> categorias = new ArrayList<>(Arrays.asList("Roupas", "Produtos de Higiene", "Alimentos"));
 
-        Abrigo abrigo = abrigoService.getAbrigo(id);
+        for(int i =0; i< categorias.size(); i++){
+            System.out.println((i+1) + " - " + categorias.get(i));
+        }
+        System.out.println("4 - Sair");
+        return categorias;
+    }
+
+    public Abrigo getAbrigo(){
+        try{
+            System.out.print("Informe o ID do abrigo que será feita o pedido: ");
+            Long id = sc.nextLong();
+            sc.nextLine();
+
+            Abrigo abrigo = abrigoService.getAbrigo(id);
+            return  abrigo;
+        } catch (InputMismatchException e){
+            throw new InputMismatchException("O ID do abrigo precisa ser um número!");
+        }
+    }
+    public void fazerDoacao(){
+        Abrigo abrigo = getAbrigo();
+
         System.out.println();
 
-        System.out.println("Categorias:\n1 - Roupas.\n2 - Produtos de Higiene\n3 - Alimentos");
-        System.out.print("Digite qual a categoria do item do pedido: ");
-        String categoria = sc.nextLine();
+        List<String> categorias = mostrarCategoriasMenu();
+        System.out.println();
 
-        List<Item> items = itemService.findByCategoria(categoria);
+        System.out.print("Digite o núumero da categoria do item do pedido: ");
+        Integer numeroCategoria = sc.nextInt();
+        sc.nextLine();
 
-        for(Item item : items){
-            System.out.println(item);
+        while(numeroCategoria <= 0 || numeroCategoria > categorias.size()+1){
+            System.out.print("Selecione uma opção válida: ");
+            numeroCategoria = sc.nextInt();
+            sc.nextLine();
         }
 
-        //Fazer tratamento de id errado
+        if(numeroCategoria == 4){
+            return;
+        }
 
-        System.out.println();
-
-        System.out.print("Digite o id do item que deseja fazer a doação: ");
-        Integer idItem = sc.nextInt();
-        sc.nextLine();
-
-        Item itemDoado = items.get(idItem-1);
-
-        System.out.print("Informe a quantidade de " + itemDoado.getItemTipo() + " de genero "
-                + itemDoado.getGenero()  + " e tamanho " + itemDoado.getTamanho() + " a serem doadas(os): ");
+        Item itemDoado = getItemDoPedido(numeroCategoria, categorias);
+        System.out.print("Informe a quantidade necessária: ");
 
         Integer quantidade = sc.nextInt();
         sc.nextLine();
@@ -72,23 +88,30 @@ public class PedidoSystemUtil {
 
         Pedido pedido = new Pedido(abrigo, StatusPedido.PENDENTE, null, itemDoado, quantidade);
 
-        System.out.println("Centros que tem o item do pedido");
-
         List<EstoqueCentro> estoques = estoqueCentroService.findEstoquesByItemTipo(itemDoado.getItemTipo());
+
+        if(estoques.isEmpty()){
+            System.out.println("Nenhum centro há o item solicitado!");
+            return;
+        }
+
+        System.out.println("Centros que tem o item do pedido:");
 
         for(EstoqueCentro estoque: estoques){
             System.out.println(estoque);
         }
+        System.out.println();
 
-        System.out.println("Informe o id do centro que o pedido vaii ser enviado: ");
+        System.out.print("Informe os id(s) do centro(s) que o pedido será enviado: ");
         String[] centrosIDsResposta = sc.nextLine().split(" ");
         Long[] ids = converteInputArrayStringParaArrayLong(centrosIDsResposta);
 
         List<CentroDistribuicao> centrosQueReceberamPedido = new ArrayList<>();
 
-        salvarPedido(pedido, ids, centrosQueReceberamPedido );
-
+        salvarPedido(pedido, ids, centrosQueReceberamPedido);
     }
+
+
 
     private Long[] converteInputArrayStringParaArrayLong(String[] array){
         Long[] ids = new Long[array.length];
@@ -111,7 +134,22 @@ public class PedidoSystemUtil {
         pedidosEnviados.forEach(centroDistribuicao -> centroDistribuicao.getPedidos().add(pedido));
 
         pedidoService.savePedido(pedido);
-        System.out.println("Orderm de pedido enviada com sucesso");
+        System.out.println("Pedido enviada com sucesso");
+    }
 
+    private Item getItemDoPedido(Integer numeroCategoria, List<String> categorias){
+        List<Item> items = itemService.findByCategoria(categorias.get(numeroCategoria-1));
+
+        for(int i = 0; i<items.size(); i++){
+            System.out.println("Item " + (i+1) + ":");
+            System.out.println(items.get(i));
+        }
+        System.out.println();
+        Integer itemId;
+        System.out.print("Digite o número do item que deseja fazer o pedido: ");
+        itemId = sc.nextInt();
+
+        Item itemDoPedido = items.get(itemId-1);
+        return itemDoPedido;
     }
 }
