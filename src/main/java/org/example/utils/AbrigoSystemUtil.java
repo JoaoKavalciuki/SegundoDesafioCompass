@@ -110,7 +110,10 @@ public class AbrigoSystemUtil {
                         System.out.println("Nenhum abrigo encontrado.");
                     } else {
                         for (EstoqueAbrigo estoqueAbrigo : estoqueAbrigosRecebidosAsc) {
-                            System.out.println(estoqueAbrigo.getAbrigo() + " - Itens Recebidos: " + estoqueAbrigo.getQuantidade());
+                            System.out.println("ID: " + estoqueAbrigo.getAbrigo().getId() +
+                                    ", Nome: " + estoqueAbrigo.getAbrigo().getNome() +
+                                    ", Itens Recebidos: " + estoqueAbrigo.getQuantidade() +
+                                    ", Tipo do Item: " + estoqueAbrigo.getItem().getItemTipo());
                         }
                     }
                     break;
@@ -120,7 +123,10 @@ public class AbrigoSystemUtil {
                         System.out.println("Nenhum abrigo encontrado.");
                     } else {
                         for (EstoqueAbrigo estoqueAbrigo : estoqueAbrigosRecebidosDesc) {
-                            System.out.println(estoqueAbrigo.getAbrigo() + " - Itens Recebidos: " + estoqueAbrigo.getQuantidade());
+                            System.out.println("ID: " + estoqueAbrigo.getAbrigo().getId() +
+                                    ", Nome: " + estoqueAbrigo.getAbrigo().getNome() +
+                                    ", Itens Recebidos: " + estoqueAbrigo.getQuantidade() +
+                                    ", Tipo do Item: " + estoqueAbrigo.getItem().getItemTipo());
                         }
                     }
                     break;

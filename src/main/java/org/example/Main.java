@@ -26,9 +26,9 @@ public class Main {
 
         EstoqueAbrigoService estoqueAbrigoService = new EstoqueAbrigoServiceImpl(new EstoqueAbrigoRepository());
 
-        AbrigoServiceImpl abrigoService = new AbrigoServiceImpl(em, sc, estoqueAbrigoService);
+        AbrigoServiceImpl abrigoService = new AbrigoServiceImpl(em, sc);
 
-        AbrigoSystemUtil abrigoSystemUtil = new AbrigoSystemUtil(new AbrigoServiceImpl(em, sc, estoqueAbrigoService),
+        AbrigoSystemUtil abrigoSystemUtil = new AbrigoSystemUtil(new AbrigoServiceImpl(em, sc),
                 new EstoqueAbrigoServiceImpl(new EstoqueAbrigoRepository()));
 
         PedidoSystemUtil pedidoSystemUtil = new PedidoSystemUtil(abrigoService, new ItemServiceImpl(),
@@ -126,6 +126,7 @@ public class Main {
             System.out.println("4. Editar Doação");
             System.out.println("5. Excluir Doação");
             System.out.println("6. Voltar ao menu principal");
+            System.out.print("Escolha uma opção: ");
             op = sc.nextInt();
             sc.nextLine();
             switch (op) {
@@ -162,6 +163,7 @@ public class Main {
             System.out.println("4. Editar Item");
             System.out.println("5. Excluir Item");
             System.out.println("6. Voltar ao menu principal");
+            System.out.print("Escolha uma opção: ");
             op = sc.nextInt();
             sc.nextLine();
             switch (op) {

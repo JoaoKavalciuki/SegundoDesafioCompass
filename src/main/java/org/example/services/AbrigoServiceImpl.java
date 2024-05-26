@@ -5,6 +5,7 @@ import org.example.entities.EstoqueAbrigo;
 import org.example.exceptions.ResourceNotFoundException;
 import org.example.exceptions.ValidationException;
 import org.example.repositories.AbrigoRepository;
+import org.example.repositories.EstoqueAbrigoRepository;
 import org.example.services.interfaces.AbrigoService;
 
 import jakarta.persistence.EntityManager;
@@ -21,13 +22,12 @@ public class AbrigoServiceImpl implements AbrigoService {
     private Scanner sc;
     private EstoqueAbrigoService estoqueAbrigoService;
     private PedidoSystemUtil pedidoSystemUtil;
-    private AbrigoRepository estoqueAbrigoRepository;
+    private EstoqueAbrigoRepository estoqueAbrigoRepository;
 
-    public AbrigoServiceImpl(EntityManager em, Scanner sc, EstoqueAbrigoService estoqueAbrigoService) {
+    public AbrigoServiceImpl(EntityManager em, Scanner sc) {
         this.em = em;
         this.abrigoRepository = new AbrigoRepository(em);
         this.sc = sc;
-        this.estoqueAbrigoService = estoqueAbrigoService;
     }
 
     public void createAbrigo(Abrigo abrigo) {
@@ -178,11 +178,11 @@ public class AbrigoServiceImpl implements AbrigoService {
     }
 
     public List<EstoqueAbrigo> findByQuantidadeRecebidaAsc() {
-        return estoqueAbrigoRepository.findByQuantidadeRecebidaAsc();
+        return abrigoRepository.findByQuantidadeRecebidaAsc();
     }
 
     public List<EstoqueAbrigo> findByQuantidadeRecebidaDesc() {
-        return estoqueAbrigoRepository.findByQuantidadeRecebidaDesc();
+        return abrigoRepository.findByQuantidadeRecebidaDesc();
     }
 
     public Abrigo getAbrigo(Long id) {
