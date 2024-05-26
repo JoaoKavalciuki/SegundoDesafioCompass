@@ -55,8 +55,6 @@ public class PedidoSystemUtil {
         }
     }
     public void fazerPedido(){
-
-
         Abrigo abrigo = getAbrigo();
 
         System.out.println();
@@ -127,8 +125,6 @@ public class PedidoSystemUtil {
 
         salvarPedido(pedido, ids, centrosQueReceberamPedido);
     }
-
-
 
     private Long[] converteInputArrayStringParaArrayLong(String[] array){
         Long[] ids = new Long[array.length];
