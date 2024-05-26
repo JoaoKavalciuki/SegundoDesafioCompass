@@ -45,7 +45,7 @@ public class Main {
         ItemSystemUtil itemSystemUtil = new ItemSystemUtil(new ItemServiceImpl());
 
         int op = 0;
-        while (op != 5) {
+        while (op != 6) {
             op = menu(sc);
             switch (op) {
                 case 1:
@@ -250,7 +250,7 @@ public class Main {
     }
     private static void transferenciaMenu(Scanner sc, TransferenciaSystemUtil transferenciaSystemUtil) {
         int op = 0;
-        while (op != 5) {
+        while (op != 6) {
             System.out.println("Menu de Transferencia:");
             System.out.println("1. Transferir entre centros");
             System.out.println("6. Voltar ao Menu Principal");

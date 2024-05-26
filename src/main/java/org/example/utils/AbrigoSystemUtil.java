@@ -49,7 +49,8 @@ public class AbrigoSystemUtil {
     }
 
     public void filtroAbrigo() {
-        while (true) {
+        int tipo = 0;
+        while (tipo != 7) {
             System.out.println("Filtro de listagem: ");
             System.out.println("1 - Capacidade Crescente");
             System.out.println("2 - Capacidade Decrescente");
@@ -60,7 +61,7 @@ public class AbrigoSystemUtil {
             System.out.println("7 - Voltar ao menu");
             System.out.print("Digite o número da operação desejada: ");
 
-            int tipo = sc.nextInt();
+            tipo = sc.nextInt();
             sc.nextLine();
 
             switch (tipo) {
@@ -131,7 +132,7 @@ public class AbrigoSystemUtil {
                     }
                     break;
                 case 7:
-                    return;
+                    break;
                 default:
                     System.out.println("Código desconhecido");
                     continue;
