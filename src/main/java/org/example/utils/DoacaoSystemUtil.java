@@ -14,16 +14,23 @@ import org.example.repositories.EstoqueCentroRepository;
 import org.example.repositories.PedidoRepository;
 import org.example.services.*;
 
+import jakarta.persistence.EntityManager;
+
 public class DoacaoSystemUtil {
     private final DoacaoServiceImpl doacaoService = new DoacaoServiceImpl();
     private Scanner sc = new Scanner(System.in);
+    private EntityManager em;
     private final CentroSystemUtil centroUtil = new CentroSystemUtil(new CentroDistribuicaoServiceImpl(),
                                                                      new PedidoServiceImpl(new PedidoRepository()),
                                                                      new EstoqueCentroServiceImpl(new EstoqueCentroRepository()),
-                                                                     new EstoqueAbrigoServiceImpl(new EstoqueAbrigoRepository()));
+                                                                     new EstoqueAbrigoServiceImpl(em,new EstoqueAbrigoRepository()), new TransferenciaServiceImpl(em));
     private final ItemSystemUtil itemUtil = new ItemSystemUtil(new ItemServiceImpl());
 
-    public void saveDoacao() {
+    public DoacaoSystemUtil(EntityManager em) {
+		this.em = em;
+	}
+
+	public void saveDoacao() {
         try {
             Item item = itemUtil.getItem();
             CentroDistribuicao centro = centroUtil.getCentro();

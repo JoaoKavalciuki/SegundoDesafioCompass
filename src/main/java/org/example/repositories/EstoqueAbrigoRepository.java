@@ -1,16 +1,16 @@
 package org.example.repositories;
 
-import jakarta.persistence.NoResultException;
+import java.util.List;
+import java.util.Optional;
+
 import org.example.entities.Abrigo;
 import org.example.entities.EstoqueAbrigo;
-
-import jakarta.persistence.EntityManager;
-import org.example.entities.EstoqueCentro;
 import org.example.entities.Item;
 import org.example.utils.JPAUtil;
 
-import java.util.List;
-import java.util.Optional;
+import jakarta.persistence.EntityManager;
+import jakarta.persistence.NoResultException;
+import jakarta.persistence.NonUniqueResultException;
 
 public class EstoqueAbrigoRepository {
     private EntityManager em;
@@ -54,7 +54,7 @@ public class EstoqueAbrigoRepository {
                 .getResultList();
     }
 
-    public Optional<EstoqueAbrigo> findEstoqueByItemTipo(Long abrigoId, String tipo) {
+    public Optional<EstoqueAbrigo> findEstoqueByItemTipo(Long abrigoId, String tipo, Long itemId) {
         try {
             EstoqueAbrigo estoqueAbrigo = em.createQuery(
                             "SELECT ea FROM EstoqueAbrigo ea JOIN ea.item i WHERE ea.abrigo.id = :abrigoId AND i.itemTipo = :itemTipo",
@@ -65,6 +65,17 @@ public class EstoqueAbrigoRepository {
             return Optional.of(estoqueAbrigo);
         } catch (NoResultException e) {
             return Optional.empty();
+        } catch (NonUniqueResultException e) {
+            List<EstoqueAbrigo> results = em.createQuery(
+                            "SELECT ea FROM EstoqueAbrigo ea JOIN ea.item i WHERE ea.abrigo.id = :abrigoId AND i.itemTipo = :itemTipo",
+                            EstoqueAbrigo.class)
+                    .setParameter("abrigoId", abrigoId)
+                    .setParameter("itemTipo", tipo)
+                    .getResultList();
+            
+            return results.stream()
+                    .filter(estoque -> estoque.getItem().getId().equals(itemId))
+                    .findFirst();
         }
     }
 

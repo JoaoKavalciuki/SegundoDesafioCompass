@@ -22,12 +22,12 @@ public class Main {
         EntityManager em = JPAUtil.getEntityManager();
         Scanner sc = new Scanner(System.in);
 
-        EstoqueAbrigoService estoqueAbrigoService = new EstoqueAbrigoServiceImpl(new EstoqueAbrigoRepository());
+        EstoqueAbrigoService estoqueAbrigoService = new EstoqueAbrigoServiceImpl(em, new EstoqueAbrigoRepository());
 
         AbrigoServiceImpl abrigoService = new AbrigoServiceImpl(em, sc, estoqueAbrigoService);
 
         AbrigoSystemUtil abrigoSystemUtil = new AbrigoSystemUtil(new AbrigoServiceImpl(em, sc, estoqueAbrigoService),
-                new EstoqueAbrigoServiceImpl(new EstoqueAbrigoRepository()));
+                new EstoqueAbrigoServiceImpl(em,new EstoqueAbrigoRepository()));
 
         PedidoSystemUtil pedidoSystemUtil = new PedidoSystemUtil(abrigoService, new ItemServiceImpl(),
                 new PedidoServiceImpl(new PedidoRepository()), new CentroDistribuicaoServiceImpl(),
@@ -36,9 +36,9 @@ public class Main {
         CentroSystemUtil centroSystemUtil = new CentroSystemUtil(new CentroDistribuicaoServiceImpl(),
                 new PedidoServiceImpl(new PedidoRepository()),
                 new EstoqueCentroServiceImpl(new EstoqueCentroRepository()),
-                new EstoqueAbrigoServiceImpl(new EstoqueAbrigoRepository()));
+                new EstoqueAbrigoServiceImpl(em,new EstoqueAbrigoRepository()), new TransferenciaServiceImpl(em));
 
-        DoacaoSystemUtil doacaoSystemUtil = new DoacaoSystemUtil();
+        DoacaoSystemUtil doacaoSystemUtil = new DoacaoSystemUtil(em);
 
         ItemSystemUtil itemSystemUtil = new ItemSystemUtil(new ItemServiceImpl());
 
@@ -239,10 +239,10 @@ public class Main {
     }
     private static void transferenciaMenu(Scanner sc, TransferenciaSystemUtil transferenciaSystemUtil) {
         int op = 0;
-        while (op != 5) {
+        while (op != 3) {
             System.out.println("Menu de Transferencia:");
             System.out.println("1. Transferir entre centros");
-            System.out.println("6. Voltar ao Menu Principal");
+            System.out.println("3. Voltar ao Menu Principal");
             System.out.print("Escolha uma opção: ");
             op = sc.nextInt();
             sc.nextLine();
@@ -250,7 +250,7 @@ public class Main {
                 case 1:
                 	transferenciaSystemUtil.transferir(sc);
                     break;
-                case 6:
+                case 3:
                     System.out.println("Voltando ao Menu Principal");
                     break;
                 default:

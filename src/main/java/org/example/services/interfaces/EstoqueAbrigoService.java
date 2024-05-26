@@ -9,6 +9,7 @@ public interface EstoqueAbrigoService {
     EstoqueAbrigo obterItemEstoque(Long id);
     List<EstoqueAbrigo> listarEstoquePorAbrigo(Long abrigoId);
 
-    Optional<EstoqueAbrigo> findEstoqueByItemTipo(Long abrigoId, String tipo);
-    void updateEstoque(Long abrigoId, Long itemId, int quantidade);
+	Optional<EstoqueAbrigo> findEstoqueByItemTipo(Long abrigoId, String tipo, Long itemId);
+    void updateEstoque(Long centroId, Long abrigoId, Long itemId, int quantidade);
+
 }

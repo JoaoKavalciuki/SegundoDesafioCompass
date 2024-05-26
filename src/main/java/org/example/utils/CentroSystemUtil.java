@@ -1,5 +1,8 @@
 package org.example.utils;
 
+import java.util.List;
+import java.util.Scanner;
+
 import org.example.entities.CentroDistribuicao;
 import org.example.entities.Pedido;
 import org.example.entities.enums.StatusPedido;
@@ -8,22 +11,22 @@ import org.example.services.interfaces.CentroDistribuicaoService;
 import org.example.services.interfaces.EstoqueAbrigoService;
 import org.example.services.interfaces.EstoqueCentroService;
 import org.example.services.interfaces.PedidoService;
-
-import java.util.List;
-import java.util.Scanner;
+import org.example.services.interfaces.TransferenciaService;
 
 public class CentroSystemUtil {
     private CentroDistribuicaoService centroService;
     private PedidoService pedidoService;
     private EstoqueCentroService estoqueCentroService;
     private EstoqueAbrigoService estoqueAbrigoService;
+    private TransferenciaService transferenciaService;
     private Scanner sc = new Scanner(System.in);
 
-    public CentroSystemUtil(CentroDistribuicaoService centroService, PedidoService pedidoService, EstoqueCentroService estoqueCentroService, EstoqueAbrigoService estoqueAbrigoService) {
+    public CentroSystemUtil(CentroDistribuicaoService centroService, PedidoService pedidoService, EstoqueCentroService estoqueCentroService, EstoqueAbrigoService estoqueAbrigoService, TransferenciaService transferenciaService) {
         this.centroService = centroService;
         this.pedidoService = pedidoService;
         this.estoqueCentroService = estoqueCentroService;
         this.estoqueAbrigoService = estoqueAbrigoService;
+        this.transferenciaService = transferenciaService;
     }
 
     public void listCentros() {
@@ -82,9 +85,10 @@ public class CentroSystemUtil {
                 case "A":
                     pedidoSelecionado.setStatusPedido(StatusPedido.ACEITO);
                     estoqueCentroService.reduzirEstoque(centro.getId(), pedidoSelecionado.getItem().getId(), pedidoSelecionado.getQuantidade());
-                    estoqueAbrigoService.updateEstoque(pedidoSelecionado.getAbrigo().getId(), pedidoSelecionado.getItem().getId(), pedidoSelecionado.getQuantidade());
+                    estoqueAbrigoService.updateEstoque(centro.getId(), pedidoSelecionado.getAbrigo().getId(), pedidoSelecionado.getItem().getId(), pedidoSelecionado.getQuantidade());
                     System.out.println("Pedido aceito com sucesso");
                     pedidoService.savePedido(pedidoSelecionado);
+                    transferenciaService.verificarDevolucao(pedidoSelecionado.getAbrigo().getId(), centro.getId(), pedidoSelecionado.getItem().getId(), pedidoSelecionado.getQuantidade());
                     break;
                 case "R":
                     System.out.println("Informe o motivo da recusa:");

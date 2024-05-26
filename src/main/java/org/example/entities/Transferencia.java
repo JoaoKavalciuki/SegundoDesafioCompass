@@ -2,6 +2,8 @@ package org.example.entities;
 
 import java.sql.Timestamp;
 
+import org.example.entities.enums.TipoTransferencia;
+
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
@@ -39,6 +41,9 @@ public class Transferencia {
     @JoinColumn(name = "data_transferencia", nullable = false)
     private Timestamp dataTransferencia;
 
+    @JoinColumn(name = "tipo_transferencia", nullable = false)
+    private TipoTransferencia tipoTransferencia;
+    
     private String tipo;
 
     public Transferencia() {
@@ -120,5 +125,11 @@ public class Transferencia {
 		this.tipo = tipo;
 	}
 
-    
+	public TipoTransferencia getTipoTransferencia() {
+		return tipoTransferencia;
+	}
+
+	public void setTipoTransferencia(TipoTransferencia tipoTransferencia) {
+		this.tipoTransferencia = tipoTransferencia;
+	}    
 }

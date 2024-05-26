@@ -1,14 +1,20 @@
 package org.example.services;
 
+import java.sql.Timestamp;
+import java.time.Instant;
 import java.util.Optional;
-import java.util.Scanner;
 
-import org.example.entities.Abrigo;
 import org.example.entities.CentroDistribuicao;
+import org.example.entities.EstoqueAbrigo;
 import org.example.entities.EstoqueCentro;
 import org.example.entities.Item;
 import org.example.entities.Transferencia;
+import org.example.entities.enums.TipoTransferencia;
+import org.example.repositories.AbrigoRepository;
+import org.example.repositories.CentroDistribuicaoRepository;
+import org.example.repositories.EstoqueAbrigoRepository;
 import org.example.repositories.EstoqueCentroRepository;
+import org.example.repositories.ItemRepository;
 import org.example.repositories.TransferenciaRepository;
 import org.example.services.interfaces.TransferenciaService;
 
@@ -18,15 +24,25 @@ public class TransferenciaServiceImpl implements TransferenciaService {
 
 	private EntityManager em;
 	private TransferenciaRepository transferenciaRepository;
-
+	private EstoqueCentroRepository estoqueRepository;
+	private EstoqueAbrigoRepository estoqueAbrigoRepository;
+	private AbrigoRepository abrigoRepository;
+	private CentroDistribuicaoRepository cdRepository;
+	private ItemRepository itemRepository;
+	
 	public TransferenciaServiceImpl(EntityManager em) {
 		this.em = em;
 		this.transferenciaRepository = new TransferenciaRepository(em);
+		this.estoqueRepository = new EstoqueCentroRepository();
+		this.abrigoRepository = new AbrigoRepository(em);
+		this.cdRepository = new CentroDistribuicaoRepository();
+		this.itemRepository = new ItemRepository();
+		this.estoqueAbrigoRepository = new EstoqueAbrigoRepository();
 	}
 
 	@Override
 	public void transferirEntreCentros(Transferencia transferencia) {
-		EstoqueCentroRepository estoqueRepository = new EstoqueCentroRepository();
+		transferencia.setTipoTransferencia(TipoTransferencia.CENTROPARACENTRO);
 		Item item = transferencia.getItem();
 		CentroDistribuicao origem = transferencia.getOrigemCentro();
 		CentroDistribuicao destino = transferencia.getDestinoCentro();
@@ -105,9 +121,63 @@ public class TransferenciaServiceImpl implements TransferenciaService {
 	}
 
 	@Override
-	public void devolverParaAbrigo(CentroDistribuicao centro, Abrigo abrigo, Item item, int quantidade) {
-		// TODO Auto-generated method stub
+	public void devolverItem(Long centroId, Long abrigoId, Long itemId, int quantidade) {
+		System.out.println("A quantidade do pedido ultrapassa o limite do abrigo, devolvendo itens de acordo com o limite.");
+		Item item = itemRepository.findById(itemId);
+		Optional<EstoqueCentro> estoqueCentroOpt = estoqueRepository.findByCDeItem(centroId, itemId);
+		Optional<EstoqueAbrigo> estoqueAbrigoOpt = estoqueAbrigoRepository.findEstoqueByItemTipo(abrigoId, item.getItemTipo(), itemId);
+		if (estoqueCentroOpt.isPresent()) {
+			if (estoqueAbrigoOpt.isPresent()) {
+				EstoqueCentro estoqueCentro = estoqueCentroOpt.get();
+				EstoqueAbrigo estoqueAbrigo = estoqueAbrigoOpt.get();
+				System.out.println("EstoqueAbrigo quantidade: "+estoqueAbrigo.getQuantidade());
+				int aDevolver = 0;
+				if (estoqueAbrigo.getQuantidade()<=200) {
+					estoqueAbrigo.setQuantidade(estoqueAbrigo.getQuantidade()+quantidade);;
+				}		
+			
+				aDevolver = estoqueAbrigo.getQuantidade()-200;
+				
+				System.out.println("A devolver: "+aDevolver);
+				estoqueCentro.setQuantidade(estoqueCentro.getQuantidade()+aDevolver);
+				System.out.println("Estoque centro atualizado "+estoqueCentro);
+				estoqueRepository.save(estoqueCentro);;
+				
+				estoqueAbrigo.setQuantidade(estoqueAbrigo.getQuantidade()-aDevolver);
+				estoqueAbrigoRepository.save(estoqueAbrigo);;
+				registrar(centroId, abrigoId, itemId, aDevolver, TipoTransferencia.ABRIGOPARACENTRO);					
+			}
+		}
+	}
 
+	public void registrar(Long centroId, Long abrigoId, Long itemId, int quantidade, TipoTransferencia tipo) {
+		Transferencia transferencia = new Transferencia();
+		transferencia.setAbrigo(abrigoRepository.findById(abrigoId));
+		if (tipo == TipoTransferencia.CENTROPARAABRIGO)
+			transferencia.setOrigemCentro(cdRepository.findById(centroId));
+		else
+			transferencia.setDestinoCentro(cdRepository.findById(centroId));
+		transferencia.setItem(itemRepository.findById(itemId));
+		transferencia.setQuantidade(quantidade);
+		transferencia.setTipo(itemRepository.findById(itemId).getItemTipo());
+		Instant instant = Instant.now();
+		Timestamp timestamp = Timestamp.from(instant);
+		transferencia.setDataTransferencia(timestamp);
+		transferencia.setTipoTransferencia(tipo);
+		transferenciaRepository.save(transferencia);
+	}
+
+	@Override
+	public void verificarDevolucao(Long abrigoId, Long centroId, Long itemId, int quantidade) {
+		Item item = itemRepository.findById(itemId);
+		Optional<EstoqueAbrigo> estoqueAbrigoOpt = estoqueAbrigoRepository.findEstoqueByItemTipo(abrigoId, item.getItemTipo(), itemId); 
+		if (estoqueAbrigoOpt.isPresent()) {
+			EstoqueAbrigo estoqueAbrigo = estoqueAbrigoOpt.get();			
+			if (quantidade + estoqueAbrigo.getQuantidade() > 200) {
+				System.out.println("verificarDevolucao: estoque abrigo quantidade: "+estoqueAbrigo.getQuantidade());
+	        	devolverItem(centroId, abrigoId, itemId, quantidade);
+			}
+		}
 	}
 
 }
