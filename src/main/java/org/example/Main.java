@@ -227,7 +227,7 @@ public class Main {
                         }
 
                         if (resposta == 'S') {
-                            pedidoSystemUtil.fazerDoacao();
+                            pedidoSystemUtil.fazerPedido();
                         }
                     }
                     break;
