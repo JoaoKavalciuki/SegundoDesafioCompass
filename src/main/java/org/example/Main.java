@@ -1,7 +1,9 @@
 package org.example;
 
+import java.util.List;
 import java.util.Scanner;
 
+import org.example.entities.Abrigo;
 import org.example.repositories.EstoqueAbrigoRepository;
 import org.example.repositories.EstoqueCentroRepository;
 import org.example.repositories.PedidoRepository;
@@ -189,14 +191,15 @@ public class Main {
 
     private static void abrigoMenu(Scanner sc, AbrigoSystemUtil abrigoSystemUtil, PedidoSystemUtil pedidoSystemUtil) {
         int op = 0;
-        while (op != 6) {
+        while (op != 7) {
             System.out.println("Menu de Abrigos:");
             System.out.println("1. Cadastrar Abrigo");
             System.out.println("2. Listar Abrigos");
             System.out.println("3. Atualizar Abrigo");
             System.out.println("4. Deletar Abrigo");
             System.out.println("5. Listar Estoque dos Abrigos");
-            System.out.println("6. Voltar ao Menu Principal");
+            System.out.println("6. Listar Estoque com filtro");
+            System.out.println("7. Voltar ao Menu Principal");
             System.out.print("Escolha uma opção: ");
             op = sc.nextInt();
             sc.nextLine();
@@ -205,20 +208,26 @@ public class Main {
                     abrigoSystemUtil.create();
                     break;
                 case 2:
-                    abrigoSystemUtil.listAbrigos();
-                    System.out.println("Desja fazer um pedido de algum item para algum abrigo? (S/N)");
-                    char resposta = sc.next().charAt(0);
-                    sc.nextLine();
-                    while (resposta != 'S' && resposta != 'N') {
-                        System.out.print("A resposta precisa ser S ou N. Insira um resposta válida: ");
-                        resposta = sc.next().charAt(0);
+                    List<Abrigo> abrigos = abrigoSystemUtil.listAbrigos();
+                    if (abrigos == null || abrigos.isEmpty()) {
+                        System.out.println("Não há abrigos cadastrados.");
+                    } else {
+                        for (Abrigo abrigo : abrigos) {
+                            System.out.println(abrigo);
+                        }
+                        System.out.println("Deseja fazer um pedido de algum item para algum abrigo? (S/N)");
+                        char resposta = sc.next().charAt(0);
                         sc.nextLine();
-                    }
+                        while (resposta != 'S' && resposta != 'N') {
+                            System.out.print("A resposta precisa ser S ou N. Insira uma resposta válida: ");
+                            resposta = sc.next().charAt(0);
+                            sc.nextLine();
+                        }
 
-                    if (resposta == 'S') {
-                        pedidoSystemUtil.fazerDoacao();
+                        if (resposta == 'S') {
+                            pedidoSystemUtil.fazerDoacao();
+                        }
                     }
-
                     break;
                 case 3:
                     abrigoSystemUtil.update();
@@ -230,7 +239,7 @@ public class Main {
                     abrigoSystemUtil.listAbrigoEstoque();
                     break;
                 case 6:
-                    System.out.println("Voltando ao Menu Principal");
+                    abrigoSystemUtil.filtroAbrigo();
                     break;
                 default:
                     System.out.println("Opção inválida!");
