@@ -21,6 +21,8 @@ public class PedidoSystemUtil {
     private CentroDistribuicaoService centroDistribuicaoService;
     private EstoqueCentroService estoqueCentroService;
 
+    private String regex = "^\\d+$";
+
     public PedidoSystemUtil(AbrigoService abrigoService, ItemService itemService, PedidoService pedidoService,
                             CentroDistribuicaoService centroDistribuicaoService, EstoqueCentroService estoqueCentroService) {
         this.abrigoService = abrigoService;
@@ -52,7 +54,9 @@ public class PedidoSystemUtil {
             throw new InputMismatchException("O ID do abrigo precisa ser um número!");
         }
     }
-    public void fazerDoacao(){
+    public void fazerPedido(){
+
+
         Abrigo abrigo = getAbrigo();
 
         System.out.println();
@@ -61,8 +65,14 @@ public class PedidoSystemUtil {
         System.out.println();
 
         System.out.print("Digite o núumero da categoria do item do pedido: ");
-        Integer numeroCategoria = sc.nextInt();
-        sc.nextLine();
+        String numeroCategoriaStr = sc.nextLine();
+
+        while (!numeroCategoriaStr.matches(regex)){
+            System.out.print("Digite um numero: ");
+            numeroCategoriaStr = sc.nextLine();
+        }
+
+        Integer numeroCategoria = Integer.parseInt(numeroCategoriaStr);
 
         while(numeroCategoria <= 0 || numeroCategoria > categorias.size()+1){
             System.out.print("Selecione uma opção válida: ");
@@ -77,8 +87,14 @@ public class PedidoSystemUtil {
         Item itemDoado = getItemDoPedido(numeroCategoria, categorias);
         System.out.print("Informe a quantidade necessária: ");
 
-        Integer quantidade = sc.nextInt();
-        sc.nextLine();
+        String quantidadeStr = sc.nextLine();
+
+        while (!quantidadeStr.matches(regex)){
+            System.out.print("Digite um numero: ");
+            quantidadeStr = sc.nextLine();
+        }
+
+        Integer quantidade = Integer.parseInt(quantidadeStr);
 
         while (quantidade <= 0){
             System.out.print("A quantidade tem que ser maior que zero, informe uma quantidade válida: ");
@@ -104,6 +120,7 @@ public class PedidoSystemUtil {
 
         System.out.print("Informe os id(s) do centro(s) que o pedido será enviado: ");
         String[] centrosIDsResposta = sc.nextLine().split(" ");
+
         Long[] ids = converteInputArrayStringParaArrayLong(centrosIDsResposta);
 
         List<CentroDistribuicao> centrosQueReceberamPedido = new ArrayList<>();
@@ -145,9 +162,16 @@ public class PedidoSystemUtil {
             System.out.println(items.get(i));
         }
         System.out.println();
-        Integer itemId;
+
         System.out.print("Digite o número do item que deseja fazer o pedido: ");
-        itemId = sc.nextInt();
+        String itemIdStr = sc.nextLine();
+
+        while (!itemIdStr.matches(regex)){
+            System.out.print("Digite um numero: ");
+            itemIdStr = sc.nextLine();
+        }
+
+        Integer itemId = Integer.parseInt(itemIdStr);
 
         Item itemDoPedido = items.get(itemId-1);
         return itemDoPedido;
