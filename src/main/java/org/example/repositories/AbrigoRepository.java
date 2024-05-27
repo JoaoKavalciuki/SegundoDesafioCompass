@@ -3,6 +3,8 @@ package org.example.repositories;
 import jakarta.persistence.EntityTransaction;
 import org.example.entities.Abrigo;
 import jakarta.persistence.EntityManager;
+import jakarta.persistence.TypedQuery;
+import org.example.entities.EstoqueAbrigo;
 
 import java.util.List;
 
@@ -65,12 +67,47 @@ public class AbrigoRepository {
             }
             throw new RuntimeException("Error de DELETE! ! !");
         }
-
     }
 
-    public void close() {
-        if(em.isOpen()){
-            em.close();
-        }
+    public List<Abrigo> findByOrderByCapacidadeAsc() {
+        TypedQuery<Abrigo> query = em.createQuery("SELECT a FROM Abrigo a ORDER BY a.capacidade ASC", Abrigo.class);
+        return query.getResultList();
+    }
+
+    public List<Abrigo> findByOrderByCapacidadeDesc() {
+        TypedQuery<Abrigo> query = em.createQuery("SELECT a FROM Abrigo a ORDER BY a.capacidade DESC", Abrigo.class);
+        return query.getResultList();
+    }
+
+    public List<Abrigo> findByOrderByOcupacaoAsc() {
+        TypedQuery<Abrigo> query = em.createQuery("SELECT a FROM Abrigo a ORDER BY a.ocupacao ASC", Abrigo.class);
+        return query.getResultList();
+    }
+
+    public List<Abrigo> findByOrderByOcupacaoDesc() {
+        TypedQuery<Abrigo> query = em.createQuery("SELECT a FROM Abrigo a ORDER BY a.ocupacao DESC", Abrigo.class);
+        return query.getResultList();
+    }
+
+    public List<EstoqueAbrigo> findByQuantidadeRecebidaAsc() {
+        TypedQuery<EstoqueAbrigo> query = em.createQuery(
+                "SELECT e FROM EstoqueAbrigo e ORDER BY e.quantidade ASC", EstoqueAbrigo.class);
+        return query.getResultList();
+    }
+
+    public List<EstoqueAbrigo> findByQuantidadeRecebidaDesc() {
+        TypedQuery<EstoqueAbrigo> query = em.createQuery(
+                "SELECT e FROM EstoqueAbrigo e ORDER BY e.quantidade DESC", EstoqueAbrigo.class);
+        return query.getResultList();
+    }
+
+    public boolean existsByNomeAndEndereco(String nome, String endereco) {
+        TypedQuery<Long> query = em.createQuery(
+                "SELECT COUNT(a) FROM Abrigo a WHERE a.nome = :nome AND a.endereco = :endereco",
+                Long.class);
+        query.setParameter("nome", nome);
+        query.setParameter("endereco", endereco);
+        Long count = query.getSingleResult();
+        return count > 0;
     }
 }
