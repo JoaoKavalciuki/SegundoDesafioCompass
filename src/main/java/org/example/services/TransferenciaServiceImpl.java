@@ -82,7 +82,7 @@ public class TransferenciaServiceImpl implements TransferenciaService {
 						transferenciaRepository.save(transferencia);
 					} else {
 						System.out.println("Quantidade atual na origem: " + quantidadeOrigem);
-					    System.out.println("Quantidade a ser transferida: " + transferencia.getQuantidade());
+					    	System.out.println("Quantidade a ser transferida: " + transferencia.getQuantidade());
 						System.out.println("Operação invalidada: Quantidade insuficiente no centro de origem");
 					}
 				}, () -> {
@@ -111,7 +111,7 @@ public class TransferenciaServiceImpl implements TransferenciaService {
 					transferenciaRepository.save(transferencia);
 				} else {
 					System.out.println("Quantidade atual na origem: " + quantidadeOrigem);
-				    System.out.println("Quantidade a ser transferida: " + transferencia.getQuantidade());
+				    	System.out.println("Quantidade a ser transferida: " + transferencia.getQuantidade());
 					System.out.println("Operação invalidada: Quantidade insuficiente no centro de origem");
 				}
 			}, () -> {
@@ -130,7 +130,7 @@ public class TransferenciaServiceImpl implements TransferenciaService {
 			if (estoqueAbrigoOpt.isPresent()) {
 				EstoqueCentro estoqueCentro = estoqueCentroOpt.get();
 				EstoqueAbrigo estoqueAbrigo = estoqueAbrigoOpt.get();
-				System.out.println("EstoqueAbrigo quantidade: "+estoqueAbrigo.getQuantidade());
+				
 				int aDevolver = 0;
 				if (estoqueAbrigo.getQuantidade()<=200) {
 					estoqueAbrigo.setQuantidade(estoqueAbrigo.getQuantidade()+quantidade);;
@@ -138,9 +138,7 @@ public class TransferenciaServiceImpl implements TransferenciaService {
 			
 				aDevolver = estoqueAbrigo.getQuantidade()-200;
 				
-				System.out.println("A devolver: "+aDevolver);
 				estoqueCentro.setQuantidade(estoqueCentro.getQuantidade()+aDevolver);
-				System.out.println("Estoque centro atualizado "+estoqueCentro);
 				estoqueRepository.save(estoqueCentro);;
 				
 				estoqueAbrigo.setQuantidade(estoqueAbrigo.getQuantidade()-aDevolver);
@@ -174,8 +172,7 @@ public class TransferenciaServiceImpl implements TransferenciaService {
 		if (estoqueAbrigoOpt.isPresent()) {
 			EstoqueAbrigo estoqueAbrigo = estoqueAbrigoOpt.get();			
 			if (quantidade + estoqueAbrigo.getQuantidade() > 200) {
-				System.out.println("verificarDevolucao: estoque abrigo quantidade: "+estoqueAbrigo.getQuantidade());
-	        	devolverItem(centroId, abrigoId, itemId, quantidade);
+	        		devolverItem(centroId, abrigoId, itemId, quantidade);
 			}
 		}
 	}
