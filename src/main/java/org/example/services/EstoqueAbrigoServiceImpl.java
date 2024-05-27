@@ -87,12 +87,6 @@ public class EstoqueAbrigoServiceImpl implements EstoqueAbrigoService {
         }  
 
         estoqueAbrigoRepository.updateEstoque(abrigoId, itemId, quantidade);
-        ItemRepository iRepo = new ItemRepository();
-        System.out.println("Quantidade no pedido: "+quantidade);
-        if (estoqueAbrigoRepository.findEstoqueByItemTipo(abrigoId, iRepo.findById(itemId).getItemTipo(), itemId).isPresent()) {
-        	EstoqueAbrigo ea = estoqueAbrigoRepository.findEstoqueByItemTipo(abrigoId, iRepo.findById(itemId).getItemTipo(), itemId).get();
-        	System.out.println("updateEstoque: "+ea.getQuantidade());
-        }
         TransferenciaServiceImpl transferenciaService = new TransferenciaServiceImpl(em);
         transferenciaService.registrar(centroId,abrigoId,itemId,quantidade,TipoTransferencia.CENTROPARAABRIGO);
     }
